@@ -5,3 +5,8 @@ const createMCategoryIntoDB = async (payload: TMCategoryAndGeneric) => {
   return MCATEGORY.create(payload);
 };
 
+// ! export
+
+export const mCategoryServices = {
+  createMCategoryIntoDB,
+};
