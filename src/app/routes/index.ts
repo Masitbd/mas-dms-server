@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { MRoutes } from "../modules/medicineCategory/mCategory.routes";
+import { CategoryRoutes } from "../modules/medicineCategory/mCategory.routes";
+import { GenricRoutes } from "../modules/mGeneric/generic.routes";
 
 const router = Router();
 
 const modules = [
-  { path: "/category", module: MRoutes },
-  // { path: "/beds", module: BedRoutes },
+  { path: "/category", module: CategoryRoutes },
+  { path: "/generics", module: GenricRoutes },
   // { path: "/admission", module: AdmissionRoutes },
   // { path: "/payments", module: PaymentRoutes },
 ];

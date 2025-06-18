@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { mCategoryControllers } from "./mCategory.controller";
+import { categoryControllers } from "./mCategory.controller";
 
 const router = Router();
 
-router.post("/", mCategoryControllers.createMCategory);
+router.post("/", categoryControllers.createCategory);
 
 // ! export
 
-export const MRoutes = router;
+export const CategoryRoutes = router;

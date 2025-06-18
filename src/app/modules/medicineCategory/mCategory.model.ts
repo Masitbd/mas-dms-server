@@ -1,7 +1,7 @@
 import { model, Schema } from "mongoose";
 import { TMCategoryAndGeneric } from "./mCategory.interface";
 
-const mCategorySchema = new Schema<TMCategoryAndGeneric>(
+const categorySchema = new Schema<TMCategoryAndGeneric>(
   {
     name: { type: String, unique: true, required: true },
   },
@@ -10,4 +10,4 @@ const mCategorySchema = new Schema<TMCategoryAndGeneric>(
   }
 );
 
-export const MCATEGORY = model("MCATEGORY", mCategorySchema);
+export const Category = model("Category", categorySchema);

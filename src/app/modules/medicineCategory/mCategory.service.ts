@@ -1,12 +1,12 @@
 import { TMCategoryAndGeneric } from "./mCategory.interface";
-import { MCATEGORY } from "./mCategory.model";
+import { Category } from "./mCategory.model";
 
-const createMCategoryIntoDB = async (payload: TMCategoryAndGeneric) => {
-  return MCATEGORY.create(payload);
+const createCategoryIntoDB = async (payload: TMCategoryAndGeneric) => {
+  return Category.create(payload);
 };
 
 // ! export
 
-export const mCategoryServices = {
-  createMCategoryIntoDB,
+export const categoryServices = {
+  createCategoryIntoDB,
 };

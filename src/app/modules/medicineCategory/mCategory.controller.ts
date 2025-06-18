@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import catchAsync from "../../../utils/catchAsync";
-import { mCategoryServices } from "./mCategory.service";
-import sendResponse from "../../../utils/sendResponse";
 
-const createMCategory = catchAsync(async (req: Request, res: Response) => {
-  const result = await mCategoryServices.createMCategoryIntoDB(req.body);
+import sendResponse from "../../../utils/sendResponse";
+import { categoryServices } from "./mCategory.service";
+
+const createCategory = catchAsync(async (req: Request, res: Response) => {
+  const result = await categoryServices.createCategoryIntoDB(req.body);
   sendResponse(res, {
     success: true,
     statusCode: 200,
@@ -15,6 +16,6 @@ const createMCategory = catchAsync(async (req: Request, res: Response) => {
 
 // ! export
 
-export const mCategoryControllers = {
-  createMCategory,
+export const categoryControllers = {
+  createCategory,
 };
