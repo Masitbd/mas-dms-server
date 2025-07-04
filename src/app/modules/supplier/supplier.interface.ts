@@ -1,10 +1,10 @@
-export type TSupplier = {
+import { Model } from 'mongoose';
+
+export type ISupplier = {
   name: string;
-  contact_person: string;
-  address: string;
+  contactPerson: string;
   phone: string;
-  fax: string;
-  email: string;
-  country: string;
-  city: string;
+  address: string;
 };
+
+export type SupplierModel = Model<ISupplier, Record<string, unknown>>;

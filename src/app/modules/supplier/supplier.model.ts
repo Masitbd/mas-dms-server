@@ -1,20 +1,36 @@
-import { model, Schema } from "mongoose";
-import { TSupplier } from "./supplier.interface";
+import { Schema, model } from 'mongoose';
+import { ISupplier, SupplierModel } from './supplier.interface';
 
-const supplierSchema = new Schema<TSupplier>(
+const supplierSchema = new Schema<ISupplier, SupplierModel>(
   {
-    name: { type: String, required: true },
-    contact_person: { type: String },
-    address: { type: String },
-    phone: { type: String, required: true },
-    fax: { type: String },
-    email: { type: String },
-    country: { type: String },
-    city: { type: String },
+    name: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    contactPerson: {
+      type: String,
+      required: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,
+    toJSON: {
+      virtuals: true,
+    },
   }
 );
 
-export const Supplier = model("Supplier", supplierSchema);
+export const Supplier = model<ISupplier, SupplierModel>(
+  'Supplier',
+  supplierSchema
+);
