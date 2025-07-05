@@ -3,6 +3,7 @@ import { TMCategoryAndGeneric } from "./mCategory.interface";
 
 const categorySchema = new Schema<TMCategoryAndGeneric>(
   {
+    categoryId: { type: String, unique: true, required: true },
     name: { type: String, unique: true, required: true },
   },
   {
