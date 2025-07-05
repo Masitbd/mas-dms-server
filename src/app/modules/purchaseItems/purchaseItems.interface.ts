@@ -1,6 +1,7 @@
 import { Model, Types } from 'mongoose';
 
 export type IPurchaseItem = {
+  purchaseItemId: string;
   purchaseId: Types.ObjectId;
   productId: Types.ObjectId;
   quantity: number;

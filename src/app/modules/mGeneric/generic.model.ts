@@ -1,8 +1,9 @@
 import { model, Schema } from "mongoose";
-import { TMCategoryAndGeneric } from "../medicineCategory/mCategory.interface";
+import { TGeneric } from "./generic.interface";
 
-const genericSchema = new Schema<TMCategoryAndGeneric>(
+const genericSchema = new Schema<TGeneric>(
   {
+    genericId: { type: String, unique: true, required: true },
     name: { type: String, unique: true, required: true },
   },
   {

@@ -3,6 +3,11 @@ import { IPurchaseItem, PurchaseItemModel } from './purchaseItems.interface';
 
 const purchaseItemSchema = new Schema<IPurchaseItem, PurchaseItemModel>(
   {
+    purchaseItemId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     purchaseId: {
       type: Schema.Types.ObjectId,
       ref: 'Purchase',

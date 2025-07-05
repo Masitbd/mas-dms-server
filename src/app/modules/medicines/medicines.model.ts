@@ -3,6 +3,11 @@ import { IMedicine, MedicineModel } from './medicines.interface';
 
 const medicineSchema = new Schema<IMedicine, MedicineModel>(
   {
+    medicineId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     name: {
       type: String,
       required: true,
@@ -18,8 +23,37 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
       ref: 'Category',
       required: true,
     },
+    supplierName: {
+      type: Schema.Types.ObjectId,
+      ref: 'Supplier',
+      required: true,
+    },
+    reOrderLevel: {
+      type: Number,
+      required: true,
+    },
     unit: {
       type: String,
+      required: true,
+    },
+    openingBalance: {
+      type: Number,
+      required: true,
+    },
+    openingBalanceDate: {
+      type: Date,
+      required: true,
+    },
+    openingBalanceRate: {
+      type: Number,
+      required: true,
+    },
+    salesRate: {
+      type: Number,
+      required: true,
+    },
+    discount: {
+      type: Number,
       required: true,
     },
     alertQty: {

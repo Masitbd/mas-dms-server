@@ -3,6 +3,7 @@ import catchAsync from '../../../shared/catchAsync';
 import { MedicineService } from './medicines.service';
 import sendResponse from '../../../shared/sendResponse';
 import { IMedicine } from './medicines.interface';
+import pick from '../../../shared/pick';
 
 const createMedicine = catchAsync(async (req: Request, res: Response) => {
   const { ...medicineData } = req.body;
@@ -17,13 +18,23 @@ const createMedicine = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllMedicines = catchAsync(async (req: Request, res: Response) => {
-  const result = await MedicineService.getAllMedicines();
+  const paginationOptions = pick(req.query, [
+    "page",
+    "limit",
+    "sortBy",
+    "sortOrder",
+  ]);
+  const result = await MedicineService.getAllMedicines(
+    req.query,
+    paginationOptions
+  );
 
   sendResponse<IMedicine[]>(res, {
     statusCode: 200,
     success: true,
     message: 'Medicines retrieved successfully',
-    data: result,
+    meta: result.meta,
+    data: result.data,
   });
 });
 

@@ -1,12 +1,22 @@
 import express from 'express';
 import { MedicineController } from './medicines.controller';
+import validateRequest from "../../middleware/validateRequest";
+import { MedicineValidation } from "./medicines.validation";
 
 const router = express.Router();
 
-router.post('/create-medicine', MedicineController.createMedicine);
+router.post(
+  '/create-medicine',
+  validateRequest(MedicineValidation.createMedicineZodSchema),
+  MedicineController.createMedicine
+);
 router.get('/', MedicineController.getAllMedicines);
 router.get('/:id', MedicineController.getSingleMedicine);
-router.patch('/:id', MedicineController.updateMedicine);
+router.patch(
+  '/:id',
+  validateRequest(MedicineValidation.updateMedicineZodSchema),
+  MedicineController.updateMedicine
+);
 router.delete('/:id', MedicineController.deleteMedicine);
 
 export const MedicineRoutes = router;

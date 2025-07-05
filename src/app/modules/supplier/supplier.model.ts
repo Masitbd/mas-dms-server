@@ -3,6 +3,11 @@ import { ISupplier, SupplierModel } from './supplier.interface';
 
 const supplierSchema = new Schema<ISupplier, SupplierModel>(
   {
+    supplierId: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     name: {
       type: String,
       required: true,
@@ -12,14 +17,26 @@ const supplierSchema = new Schema<ISupplier, SupplierModel>(
       type: String,
       required: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
     phone: {
       type: String,
       required: true,
       unique: true,
     },
-    address: {
+    fax: {
       type: String,
-      required: true,
+    },
+    city: {
+      type: String,
+    },
+    country: {
+      type: String,
+    },
+    email: {
+      type: String,
     },
   },
   {

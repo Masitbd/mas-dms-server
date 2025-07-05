@@ -3,6 +3,7 @@ import catchAsync from '../../../shared/catchAsync';
 import { SupplierService } from './supplier.service';
 import sendResponse from '../../../shared/sendResponse';
 import { ISupplier } from './supplier.interface';
+import pick from '../../../shared/pick';
 
 const createSupplier = catchAsync(async (req: Request, res: Response) => {
   const { ...supplierData } = req.body;
@@ -17,13 +18,23 @@ const createSupplier = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllSuppliers = catchAsync(async (req: Request, res: Response) => {
-  const result = await SupplierService.getAllSuppliers();
+  const paginationOptions = pick(req.query, [
+    "page",
+    "limit",
+    "sortBy",
+    "sortOrder",
+  ]);
+  const result = await SupplierService.getAllSuppliers(
+    req.query,
+    paginationOptions
+  );
 
   sendResponse<ISupplier[]>(res, {
     statusCode: 200,
     success: true,
     message: 'Suppliers retrieved successfully',
-    data: result,
+    meta: result.meta,
+    data: result.data,
   });
 });
 
