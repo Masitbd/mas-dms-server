@@ -64,10 +64,26 @@ Start the server
 
 ## API Documentation
 
+### Medicine Category Module
+
+*   **POST** `/api/v1/category` - Create a new medicine category
+*   **GET** `/api/v1/category` - Get all medicine categories (with search and pagination)
+*   **GET** `/api/v1/category/:id` - Get a single medicine category
+*   **PATCH** `/api/v1/category/:id` - Update a medicine category
+*   **DELETE** `/api/v1/category/:id` - Delete a medicine category
+
+### Generic Module
+
+*   **POST** `/api/v1/generics` - Create a new generic medicine
+*   **GET** `/api/v1/generics` - Get all generic medicines (with search and pagination)
+*   **GET** `/api/v1/generics/:id` - Get a single generic medicine
+*   **PATCH** `/api/v1/generics/:id` - Update a generic medicine
+*   **DELETE** `/api/v1/generics/:id` - Delete a generic medicine
+
 ### Supplier Module
 
 *   **POST** `/api/v1/suppliers/create-supplier` - Create a new supplier
-*   **GET** `/api/v1/suppliers` - Get all suppliers
+*   **GET** `/api/v1/suppliers` - Get all suppliers (with search and pagination)
 *   **GET** `/api/v1/suppliers/:id` - Get a single supplier
 *   **PATCH** `/api/v1/suppliers/:id` - Update a supplier
 *   **DELETE** `/api/v1/suppliers/:id` - Delete a supplier
@@ -75,7 +91,7 @@ Start the server
 ### Medicine Module
 
 *   **POST** `/api/v1/medicines/create-medicine` - Create a new medicine
-*   **GET** `/api/v1/medicines` - Get all medicines
+*   **GET** `/api/v1/medicines` - Get all medicines (with search and pagination)
 *   **GET** `/api/v1/medicines/:id` - Get a single medicine
 *   **PATCH** `/api/v1/medicines/:id` - Update a medicine
 *   **DELETE** `/api/v1/medicines/:id` - Delete a medicine
