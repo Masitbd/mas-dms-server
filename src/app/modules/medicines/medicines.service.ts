@@ -1,9 +1,9 @@
 import { SortOrder } from "mongoose";
-import { paginationHelper } from "../../helpers/paginationHelper";
+import { paginationHelpers } from "../../helpers/paginationHelper";
 import { IGenericResponse } from "../../interface/common";
 import { IPaginationOptions } from "../../interface/pagination";
-import { IMedicine } from './medicines.interface';
-import { Medicine } from './medicines.model';
+import { IMedicine } from "./medicines.interface";
+import { Medicine } from "./medicines.model";
 import QueryBuilder from "../../builder/QueryBuilder";
 
 const createMedicine = async (payload: IMedicine): Promise<IMedicine> => {
@@ -28,15 +28,21 @@ const getAllMedicines = async (
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<IMedicine[]>> => {
   const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelper.calculatePagination(paginationOptions);
+    paginationHelpers.calculatePagination(paginationOptions);
 
   const medicineSearchableFields = ["name", "medicineId", "unit", "salesRate"];
 
-  const medicineQuery = new QueryBuilder(Medicine.find().populate('genericName').populate('category').populate('supplierName'), query)
+  const medicineQuery = new QueryBuilder(
+    Medicine.find()
+      .populate("genericName")
+      .populate("category")
+      .populate("supplierName"),
+    { ...query, sortBy, sortOrder, page, limit, skip }
+  )
     .search(medicineSearchableFields)
     .filter()
-    .sort(sortBy, sortOrder as SortOrder)
-    .paginate(page, limit, skip)
+    .sort()
+    .paginate()
     .fields();
 
   const result = await medicineQuery.modelQuery;
@@ -53,7 +59,10 @@ const getAllMedicines = async (
 };
 
 const getSingleMedicine = async (id: string): Promise<IMedicine | null> => {
-  const result = await Medicine.findById(id).populate('genericName').populate('category').populate('supplierName');
+  const result = await Medicine.findById(id)
+    .populate("genericName")
+    .populate("category")
+    .populate("supplierName");
   return result;
 };
 
