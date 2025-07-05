@@ -2,9 +2,7 @@ import { z } from 'zod';
 
 const createCategoryZodSchema = z.object({
   body: z.object({
-    categoryId: z.string({
-      required_error: 'Category ID is required',
-    }),
+    categoryId: z.string().optional(),
     name: z.string({
       required_error: 'Category name is required',
     }),

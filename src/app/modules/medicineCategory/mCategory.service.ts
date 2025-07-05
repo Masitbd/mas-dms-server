@@ -1,5 +1,5 @@
 import { SortOrder } from "mongoose";
-import { paginationHelper } from "../../helpers/paginationHelper";
+import { paginationHelpers } from "../../helpers/paginationHelper";
 import { IGenericResponse } from "../../interface/common";
 import { IPaginationOptions } from "../../interface/pagination";
 import { Category } from "./mCategory.model";
@@ -7,6 +7,18 @@ import { TMCategoryAndGeneric } from "./mCategory.interface";
 import QueryBuilder from "../../builder/QueryBuilder";
 
 const createCategoryIntoDB = async (payload: TMCategoryAndGeneric) => {
+  const lastCategory = await Category.findOne({}, { categoryId: 1 }).sort({
+    createdAt: -1,
+  });
+
+  let newCategoryId = "00001";
+  if (lastCategory && lastCategory.categoryId) {
+    const lastId = parseInt(lastCategory.categoryId);
+    newCategoryId = (lastId + 1).toString().padStart(5, "0");
+  }
+
+  payload.categoryId = newCategoryId;
+
   return Category.create(payload);
 };
 
@@ -15,15 +27,22 @@ const getAllCategoriesFromDB = async (
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<TMCategoryAndGeneric[]>> => {
   const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelper.calculatePagination(paginationOptions);
+    paginationHelpers.calculatePagination(paginationOptions);
 
   const categorySearchableFields = ["name", "categoryId"];
 
-  const categoryQuery = new QueryBuilder(Category.find(), query)
+  const categoryQuery = new QueryBuilder(Category.find(), {
+    ...query,
+    sortBy,
+    sortOrder,
+    page,
+    limit,
+    skip,
+  })
     .search(categorySearchableFields)
     .filter()
-    .sort(sortBy, sortOrder as SortOrder)
-    .paginate(page, limit, skip)
+    .sort()
+    .paginate()
     .fields();
 
   const result = await categoryQuery.modelQuery;
