@@ -1,3 +1,4 @@
+"use client";
 import { model, Schema } from "mongoose";
 import { TMCategoryAndGeneric } from "./mCategory.interface";
 

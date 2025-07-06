@@ -12,7 +12,7 @@ import { TErrorSources } from "../interface/error";
 import AppError from "../errors/APiError";
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.log(err.statusCode);
+  console.error(err);
   //setting default values
   let statusCode = 500;
   let message = "Something went wrong!";

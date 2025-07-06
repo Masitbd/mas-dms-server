@@ -39,13 +39,12 @@ const getAllCategoriesFromDB = async (
     limit,
     skip,
   })
-    .search(categorySearchableFields)
-    .filter()
     .sort()
     .paginate()
-    .fields();
+    .search(categorySearchableFields);
 
   const result = await categoryQuery.modelQuery;
+  console.log(result);
   const meta = {
     page,
     limit,

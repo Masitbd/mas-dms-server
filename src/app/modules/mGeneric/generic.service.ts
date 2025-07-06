@@ -39,11 +39,9 @@ const getAllGenericsFromDB = async (
     limit,
     skip,
   })
-    .search(genericSearchableFields)
-    .filter()
     .sort()
     .paginate()
-    .fields();
+    .search(genericSearchableFields);
 
   const result = await genericQuery.modelQuery;
   const meta = {
