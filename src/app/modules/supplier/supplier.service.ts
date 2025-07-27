@@ -1,10 +1,11 @@
 import { SortOrder } from "mongoose";
-import { paginationHelper } from "../../helpers/paginationHelper";
+
 import { IGenericResponse } from "../../interface/common";
 import { IPaginationOptions } from "../../interface/pagination";
-import { ISupplier } from './supplier.interface';
-import { Supplier } from './supplier.model';
+import { ISupplier } from "./supplier.interface";
+import { Supplier } from "./supplier.model";
 import QueryBuilder from "../../builder/QueryBuilder";
+import { paginationHelpers } from "../../helpers/paginationHelper";
 
 const createSupplier = async (payload: ISupplier): Promise<ISupplier> => {
   const lastSupplier = await Supplier.findOne({}, { supplierId: 1 }).sort({
@@ -19,6 +20,8 @@ const createSupplier = async (payload: ISupplier): Promise<ISupplier> => {
 
   payload.supplierId = newSupplierId;
 
+
+
   const result = await Supplier.create(payload);
   return result;
 };
@@ -28,9 +31,17 @@ const getAllSuppliers = async (
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<ISupplier[]>> => {
   const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelper.calculatePagination(paginationOptions);
+    paginationHelpers.calculatePagination(paginationOptions);
 
-  const supplierSearchableFields = ["name", "supplierId", "contactPerson", "phone", "email", "city", "country"];
+  const supplierSearchableFields = [
+    "name",
+    "supplierId",
+    "contactPerson",
+    "phone",
+    "email",
+    "city",
+    "country",
+  ];
 
   const supplierQuery = new QueryBuilder(Supplier.find(), query)
     .search(supplierSearchableFields)

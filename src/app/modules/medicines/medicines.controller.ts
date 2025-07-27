@@ -1,40 +1,29 @@
-import { Request, Response } from 'express';
-import catchAsync from '../../../shared/catchAsync';
-import { MedicineService } from './medicines.service';
-import sendResponse from '../../../shared/sendResponse';
-import { IMedicine } from './medicines.interface';
-import pick from '../../../shared/pick';
+import { Request, Response } from "express";
+import catchAsync from "../../../shared/catchAsync";
+import { MedicineService } from "./medicines.service";
+import sendResponse from "../../../shared/sendResponse";
+import { IMedicine } from "./medicines.interface";
+import pick from "../../../shared/pick";
 
 const createMedicine = catchAsync(async (req: Request, res: Response) => {
-  const { ...medicineData } = req.body;
-  const result = await MedicineService.createMedicine(medicineData);
+  const result = await MedicineService.createMedicine(req.body);
 
   sendResponse<IMedicine>(res, {
     statusCode: 201,
     success: true,
-    message: 'Medicine created successfully',
+    message: "Medicine created successfully",
     data: result,
   });
 });
 
 const getAllMedicines = catchAsync(async (req: Request, res: Response) => {
-  const paginationOptions = pick(req.query, [
-    "page",
-    "limit",
-    "sortBy",
-    "sortOrder",
-  ]);
-  const result = await MedicineService.getAllMedicines(
-    req.query,
-    paginationOptions
-  );
+  const result = await MedicineService.getAllMedicines(req.query);
 
-  sendResponse<IMedicine[]>(res, {
+  sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Medicines retrieved successfully',
-    meta: result.meta,
-    data: result.data,
+    message: "Medicines retrieved successfully",
+    data: result,
   });
 });
 
@@ -45,7 +34,7 @@ const getSingleMedicine = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IMedicine>(res, {
     statusCode: 200,
     success: true,
-    message: 'Medicine retrieved successfully',
+    message: "Medicine retrieved successfully",
     data: result,
   });
 });
@@ -58,7 +47,7 @@ const updateMedicine = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IMedicine>(res, {
     statusCode: 200,
     success: true,
-    message: 'Medicine updated successfully',
+    message: "Medicine updated successfully",
     data: result,
   });
 });
@@ -70,7 +59,7 @@ const deleteMedicine = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IMedicine>(res, {
     statusCode: 200,
     success: true,
-    message: 'Medicine deleted successfully',
+    message: "Medicine deleted successfully",
     data: result,
   });
 });

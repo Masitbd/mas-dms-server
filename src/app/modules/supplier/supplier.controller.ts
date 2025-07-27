@@ -1,18 +1,18 @@
-import { Request, Response } from 'express';
-import catchAsync from '../../../shared/catchAsync';
-import { SupplierService } from './supplier.service';
-import sendResponse from '../../../shared/sendResponse';
-import { ISupplier } from './supplier.interface';
-import pick from '../../../shared/pick';
+import { Request, Response } from "express";
+import catchAsync from "../../../shared/catchAsync";
+import { SupplierService } from "./supplier.service";
+import sendResponse from "../../../shared/sendResponse";
+import { ISupplier } from "./supplier.interface";
+import pick from "../../../shared/pick";
 
 const createSupplier = catchAsync(async (req: Request, res: Response) => {
-  const { ...supplierData } = req.body;
-  const result = await SupplierService.createSupplier(supplierData);
+  // const { ...supplierData } = req.body;
+  const result = await SupplierService.createSupplier(req.body);
 
   sendResponse<ISupplier>(res, {
     statusCode: 201,
     success: true,
-    message: 'Supplier created successfully',
+    message: "Supplier created successfully",
     data: result,
   });
 });
@@ -32,7 +32,7 @@ const getAllSuppliers = catchAsync(async (req: Request, res: Response) => {
   sendResponse<ISupplier[]>(res, {
     statusCode: 200,
     success: true,
-    message: 'Suppliers retrieved successfully',
+    message: "Suppliers retrieved successfully",
     meta: result.meta,
     data: result.data,
   });
@@ -45,7 +45,7 @@ const getSingleSupplier = catchAsync(async (req: Request, res: Response) => {
   sendResponse<ISupplier>(res, {
     statusCode: 200,
     success: true,
-    message: 'Supplier retrieved successfully',
+    message: "Supplier retrieved successfully",
     data: result,
   });
 });
@@ -58,7 +58,7 @@ const updateSupplier = catchAsync(async (req: Request, res: Response) => {
   sendResponse<ISupplier>(res, {
     statusCode: 200,
     success: true,
-    message: 'Supplier updated successfully',
+    message: "Supplier updated successfully",
     data: result,
   });
 });
@@ -70,7 +70,7 @@ const deleteSupplier = catchAsync(async (req: Request, res: Response) => {
   sendResponse<ISupplier>(res, {
     statusCode: 200,
     success: true,
-    message: 'Supplier deleted successfully',
+    message: "Supplier deleted successfully",
     data: result,
   });
 });

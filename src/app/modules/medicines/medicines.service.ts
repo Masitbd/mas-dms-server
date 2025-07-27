@@ -23,13 +23,7 @@ const createMedicine = async (payload: IMedicine): Promise<IMedicine> => {
   return result;
 };
 
-const getAllMedicines = async (
-  query: Record<string, unknown>,
-  paginationOptions: IPaginationOptions
-): Promise<IGenericResponse<IMedicine[]>> => {
-  const { page, limit, skip, sortBy, sortOrder } =
-    paginationHelpers.calculatePagination(paginationOptions);
-
+const getAllMedicines = async (query: Record<string, unknown>) => {
   const medicineSearchableFields = ["name", "medicineId", "unit", "salesRate"];
 
   const medicineQuery = new QueryBuilder(
@@ -37,7 +31,7 @@ const getAllMedicines = async (
       .populate("genericName")
       .populate("category")
       .populate("supplierName"),
-    { ...query, sortBy, sortOrder, page, limit, skip }
+    query
   )
     .search(medicineSearchableFields)
     .filter()
@@ -45,16 +39,11 @@ const getAllMedicines = async (
     .paginate()
     .fields();
 
+  const meta = await medicineQuery.countTotal();
   const result = await medicineQuery.modelQuery;
-  const meta = {
-    page,
-    limit,
-    total: await Medicine.countDocuments(),
-  };
-
   return {
     meta,
-    data: result,
+    result,
   };
 };
 
