@@ -1,4 +1,4 @@
-import { Model, Types } from 'mongoose';
+import { Model, Types } from "mongoose";
 
 export type IPurchaseItem = {
   purchaseItemId: string;
@@ -9,6 +9,9 @@ export type IPurchaseItem = {
   sellRate: number;
   batchNo: string;
   expiryDate: Date;
+  medicineName: Types.ObjectId;
+  salesRate: Number;
+  dateExpire: Date;
 };
 
 export type PurchaseItemModel = Model<IPurchaseItem, Record<string, unknown>>;

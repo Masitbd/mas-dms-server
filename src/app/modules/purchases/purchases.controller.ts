@@ -5,8 +5,11 @@ import sendResponse from '../../../shared/sendResponse';
 import { IPurchase } from './purchases.interface';
 
 const createPurchase = catchAsync(async (req: Request, res: Response) => {
-  const { ...purchaseData } = req.body;
-  const result = await PurchaseService.createPurchase(purchaseData);
+  const { purchaseItems, ...purchaseData } = req.body;
+  const result = await PurchaseService.createPurchase({
+    ...purchaseData,
+    purchaseItems,
+  });
 
   sendResponse<IPurchase>(res, {
     statusCode: 201,

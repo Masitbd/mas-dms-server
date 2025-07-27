@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { IMedicine, MedicineModel } from './medicines.interface';
+import { Schema, model } from "mongoose";
+import { IMedicine, MedicineModel } from "./medicines.interface";
 
 const medicineSchema = new Schema<IMedicine, MedicineModel>(
   {
@@ -15,17 +15,17 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
     },
     genericName: {
       type: Schema.Types.ObjectId,
-      ref: 'Generic',
+      ref: "Generic",
       required: true,
     },
     category: {
       type: Schema.Types.ObjectId,
-      ref: 'Category',
+      ref: "Category",
       required: true,
     },
     supplierName: {
       type: Schema.Types.ObjectId,
-      ref: 'Supplier',
+      ref: "Supplier",
       required: true,
     },
     reOrderLevel: {
@@ -54,7 +54,6 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
     },
     discount: {
       type: Number,
-      required: true,
     },
     alertQty: {
       type: Number,
@@ -70,6 +69,6 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
 );
 
 export const Medicine = model<IMedicine, MedicineModel>(
-  'Medicine',
+  "Medicine",
   medicineSchema
 );

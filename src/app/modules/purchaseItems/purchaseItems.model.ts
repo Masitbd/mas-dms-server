@@ -1,21 +1,16 @@
-import { Schema, model } from 'mongoose';
-import { IPurchaseItem, PurchaseItemModel } from './purchaseItems.interface';
+import { Schema, model } from "mongoose";
+import { IPurchaseItem, PurchaseItemModel } from "./purchaseItems.interface";
 
 const purchaseItemSchema = new Schema<IPurchaseItem, PurchaseItemModel>(
   {
-    purchaseItemId: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     purchaseId: {
       type: Schema.Types.ObjectId,
-      ref: 'Purchase',
+      ref: "Purchase",
       required: true,
     },
-    productId: {
+    medicineName: {
       type: Schema.Types.ObjectId,
-      ref: 'Medicine',
+      ref: "Medicine",
       required: true,
     },
     quantity: {
@@ -26,7 +21,7 @@ const purchaseItemSchema = new Schema<IPurchaseItem, PurchaseItemModel>(
       type: Number,
       required: true,
     },
-    sellRate: {
+    salesRate: {
       type: Number,
       required: true,
     },
@@ -34,7 +29,7 @@ const purchaseItemSchema = new Schema<IPurchaseItem, PurchaseItemModel>(
       type: String,
       required: true,
     },
-    expiryDate: {
+    dateExpire: {
       type: Date,
       required: true,
     },
@@ -48,6 +43,6 @@ const purchaseItemSchema = new Schema<IPurchaseItem, PurchaseItemModel>(
 );
 
 export const PurchaseItem = model<IPurchaseItem, PurchaseItemModel>(
-  'PurchaseItem',
+  "PurchaseItem",
   purchaseItemSchema
 );

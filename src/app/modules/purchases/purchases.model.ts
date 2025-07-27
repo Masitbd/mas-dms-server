@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { IPurchase, PurchaseModel } from './purchases.interface';
+import { Schema, model } from "mongoose";
+import { IPurchase, PurchaseModel } from "./purchases.interface";
 
 const purchaseSchema = new Schema<IPurchase, PurchaseModel>(
   {
@@ -10,7 +10,7 @@ const purchaseSchema = new Schema<IPurchase, PurchaseModel>(
     },
     supplierId: {
       type: Schema.Types.ObjectId,
-      ref: 'Supplier',
+      ref: "Supplier",
       required: true,
     },
     purchaseDate: {
@@ -27,13 +27,8 @@ const purchaseSchema = new Schema<IPurchase, PurchaseModel>(
     },
     status: {
       type: String,
-      enum: ['due', 'partial', 'paid'],
-      default: 'due',
-    },
-    createdBy: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
+      enum: ["due", "partial", "paid"],
+      default: "due",
     },
   },
   {
@@ -45,6 +40,6 @@ const purchaseSchema = new Schema<IPurchase, PurchaseModel>(
 );
 
 export const Purchase = model<IPurchase, PurchaseModel>(
-  'Purchase',
+  "Purchase",
   purchaseSchema
 );

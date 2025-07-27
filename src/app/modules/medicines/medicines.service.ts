@@ -40,10 +40,10 @@ const getAllMedicines = async (query: Record<string, unknown>) => {
     .fields();
 
   const meta = await medicineQuery.countTotal();
-  const result = await medicineQuery.modelQuery;
+  const data = await medicineQuery.modelQuery;
   return {
     meta,
-    result,
+    data,
   };
 };
 
