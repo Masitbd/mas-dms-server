@@ -1,12 +1,10 @@
-import { Model, Types } from 'mongoose';
-
-export type ISale = {
-  userId: Types.ObjectId;
-  orderDate: Date;
-  total: number;
-  status: 'pending' | 'paid' | 'shipped' | 'delivered' | 'cancelled';
-  paymentId?: Types.ObjectId; // optional
-  shippingAddress: string;
-};
-
-export type SaleModel = Model<ISale, Record<string, unknown>>;
+export interface ISale {
+  name: string;
+  address?: string;
+  contact_no?: string;
+  transaction_date?: Date; // Optional because of default
+  invoice_no: string;
+  patient_type: "outdoor" | "indoor";
+  bed_no?: string;
+  indoor_bill_no?: string;
+}
