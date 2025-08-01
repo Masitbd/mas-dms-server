@@ -17,6 +17,13 @@ const salesSchema = new Schema<ISale>(
       type: Date,
       required: true,
       default: Date.now,
+      index: true,
+    },
+    paymentId: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      unique: true,
+      ref: "Payment",
     },
     invoice_no: {
       type: String,
