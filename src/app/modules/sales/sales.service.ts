@@ -1,9 +1,12 @@
+import { generateSalesInvoiceNo } from "../../../utils/generateInvoiceNo";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { Payment } from "../payments/payments.model";
 import { ISale } from "./sales.interface";
 import { Sale } from "./sales.model";
 
 const createSale = async (payload: ISale): Promise<ISale> => {
+  payload.invoice_no = await generateSalesInvoiceNo();
+
   const paymentres = await Payment.create(payload);
   payload.paymentId = paymentres._id as any;
   const result = await Sale.create(payload);

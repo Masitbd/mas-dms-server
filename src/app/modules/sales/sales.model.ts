@@ -17,7 +17,6 @@ const salesSchema = new Schema<ISale>(
   {
     name: {
       type: String,
-      required: true,
     },
     address: {
       type: String,
@@ -46,7 +45,7 @@ const salesSchema = new Schema<ISale>(
     patient_type: {
       type: String,
       required: true,
-      enum: ["outdoor", "indoor"],
+      enum: ["outdoor", "indoor", "general"],
       default: "outdoor",
     },
     bed_no: {
@@ -56,6 +55,7 @@ const salesSchema = new Schema<ISale>(
     indoor_bill_no: {
       type: String,
     },
+    posted_by: { type: String },
   },
   {
     timestamps: true,

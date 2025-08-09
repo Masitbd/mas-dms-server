@@ -44,7 +44,7 @@ const getAllCategoriesFromDB = async (
     .search(categorySearchableFields);
 
   const result = await categoryQuery.modelQuery;
-  console.log(result);
+
   const meta = {
     page,
     limit,

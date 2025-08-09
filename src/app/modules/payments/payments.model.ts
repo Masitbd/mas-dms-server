@@ -3,18 +3,12 @@ import { IPayment, PaymentModel } from "./payments.interface";
 
 const paymentSchema = new Schema<IPayment, PaymentModel>(
   {
-    orderId: {
-      type: Schema.Types.ObjectId,
-      refPath: "orderIdModel",
-      required: true,
-    },
-    orderIdModel: {
+    invoice_no: {
       type: String,
+
       required: true,
-      enum: ["Sale", "Order"],
-      default: "Order",
     },
- 
+
     amount: {
       type: Number,
       required: true,
@@ -23,16 +17,20 @@ const paymentSchema = new Schema<IPayment, PaymentModel>(
       type: String,
       enum: ["cash", "card", "bkash", "bank"],
       required: true,
+      default: "cash",
     },
     status: {
       type: String,
       enum: ["pending", "completed", "failed"],
-      default: "pending",
+      default: "completed",
     },
     paidAt: {
       type: Date,
       required: true,
+      default: Date.now(),
     },
+
+    posted_by: { type: String },
   },
   {
     timestamps: true,

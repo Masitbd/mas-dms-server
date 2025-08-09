@@ -20,4 +20,5 @@ export interface ISale {
   bed_no?: string;
   indoor_bill_no?: string;
   medicines: [IMedicineSale];
+  posted_by: string;
 }
