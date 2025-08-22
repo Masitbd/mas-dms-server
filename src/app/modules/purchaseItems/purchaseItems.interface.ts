@@ -12,6 +12,7 @@ export type IPurchaseItem = {
   medicineName: Types.ObjectId;
   salesRate: Number;
   dateExpire: Date;
+  category: Types.ObjectId;
 };
 
 export type PurchaseItemModel = Model<IPurchaseItem, Record<string, unknown>>;

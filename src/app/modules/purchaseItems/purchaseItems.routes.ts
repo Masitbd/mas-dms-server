@@ -8,5 +8,9 @@ router.get("/", PurchaseItemController.getAllPurchaseItems);
 router.get("/:id", PurchaseItemController.getSinglePurchaseItem);
 router.patch("/:id", PurchaseItemController.updatePurchaseItem);
 router.delete("/:id", PurchaseItemController.deletePurchaseItem);
+router.get(
+  "/single-purchase/:id",
+  PurchaseItemController.getPurchaseItemForSinglePurchase
+);
 
 export const PurchaseItemRoutes = router;
