@@ -8,6 +8,7 @@ const purchaseSchema = new Schema<IPurchase, PurchaseModel>(
       required: true,
       unique: true,
     },
+
     supplierId: {
       type: Schema.Types.ObjectId,
       ref: "Supplier",
@@ -16,6 +17,14 @@ const purchaseSchema = new Schema<IPurchase, PurchaseModel>(
     purchaseDate: {
       type: Date,
       required: true,
+    },
+    vatPercentage: {
+      type: Number,
+      default: 0,
+    },
+    discountPercentage: {
+      type: Number,
+      default: 0,
     },
     totalAmount: {
       type: Number,

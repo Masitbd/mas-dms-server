@@ -35,9 +35,8 @@ const getAllPurchases = async (): Promise<IPurchase[]> => {
 };
 
 const getSinglePurchase = async (id: string): Promise<IPurchase | null> => {
-  const result = await Purchase.findById(id)
-    .populate("supplierId")
-    .populate("createdBy");
+  const result = await Purchase.findById(id);
+
   return result;
 };
 
