@@ -1,42 +1,65 @@
-import { Schema, model } from 'mongoose';
-import { ISale, SaleModel } from './sales.interface';
+import { Schema, model } from "mongoose";
+import { IMedicineSale, ISale } from "./sales.interface";
+const medicienSaleSchema = new Schema<IMedicineSale>({
+  medicineId: {
+    type: Schema.Types.ObjectId,
+    ref: "Medicine",
+    required: true,
+  },
+  quantity: { type: Number, require: true, min: 1 },
+  unit_price: { type: Number },
+  total_price: { type: Number },
+  discount: { type: Number },
+  discount_type: { type: String },
+});
 
-const salesSchema = new Schema<ISale, SaleModel>(
+const salesSchema = new Schema<ISale>(
   {
-    userId: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
+    name: {
+      type: String,
     },
-    orderDate: {
+    address: {
+      type: String,
+    },
+    contact_no: {
+      type: String,
+    },
+    medicines: [medicienSaleSchema],
+    transaction_date: {
       type: Date,
       required: true,
-    },
-    total: {
-      type: Number,
-      required: true,
-    },
-    status: {
-      type: String,
-      enum: ['pending', 'paid', 'shipped', 'delivered', 'cancelled'],
-      default: 'pending',
+      default: Date.now,
+      index: true,
     },
     paymentId: {
       type: Schema.Types.ObjectId,
-      ref: 'Payment',
-      required: false,
+      required: true,
+      unique: true,
+      ref: "Payment",
     },
-    shippingAddress: {
+    invoice_no: {
       type: String,
       required: true,
+      unique: true,
     },
+    patient_type: {
+      type: String,
+      required: true,
+      enum: ["outdoor", "indoor", "general"],
+      default: "outdoor",
+    },
+    bed_no: {
+      type: String,
+    },
+
+    indoor_bill_no: {
+      type: String,
+    },
+    posted_by: { type: String },
   },
   {
     timestamps: true,
-    toJSON: {
-      virtuals: true,
-    },
   }
 );
 
-export const Sale = model<ISale, SaleModel>('Sale', salesSchema);
+export const Sale = model("Sale", salesSchema);
