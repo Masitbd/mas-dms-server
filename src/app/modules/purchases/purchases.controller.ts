@@ -1,8 +1,11 @@
-import { Request, Response } from 'express';
-import catchAsync from '../../../shared/catchAsync';
-import { PurchaseService } from './purchases.service';
-import sendResponse from '../../../shared/sendResponse';
-import { IPurchase } from './purchases.interface';
+import { Request, Response } from "express";
+import catchAsync from "../../../shared/catchAsync";
+import { PurchaseService } from "./purchases.service";
+import sendResponse from "../../../shared/sendResponse";
+import { IPurchase } from "./purchases.interface";
+import pick from "../../../shared/pick";
+import { purchaseFilterableFields } from "./purchases.constant";
+import { paginationFields } from "../../../constants/pagination";
 
 const createPurchase = catchAsync(async (req: Request, res: Response) => {
   const { purchaseItems, ...purchaseData } = req.body;
@@ -14,19 +17,26 @@ const createPurchase = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IPurchase>(res, {
     statusCode: 201,
     success: true,
-    message: 'Purchase created successfully',
+    message: "Purchase created successfully",
     data: result,
   });
 });
 
 const getAllPurchases = catchAsync(async (req: Request, res: Response) => {
-  const result = await PurchaseService.getAllPurchases();
+  const filters = pick(req.query, purchaseFilterableFields);
+  const paginationOptions = pick(req.query, paginationFields);
+
+  const result = await PurchaseService.getAllPurchases(
+    filters,
+    paginationOptions
+  );
 
   sendResponse<IPurchase[]>(res, {
     statusCode: 200,
     success: true,
-    message: 'Purchases retrieved successfully',
-    data: result,
+    message: "Purchases retrieved successfully",
+    meta: result.meta,
+    data: result.data,
   });
 });
 
@@ -37,7 +47,7 @@ const getSinglePurchase = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IPurchase>(res, {
     statusCode: 200,
     success: true,
-    message: 'Purchase retrieved successfully',
+    message: "Purchase retrieved successfully",
     data: result,
   });
 });
@@ -50,7 +60,7 @@ const updatePurchase = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IPurchase>(res, {
     statusCode: 200,
     success: true,
-    message: 'Purchase updated successfully',
+    message: "Purchase updated successfully",
     data: result,
   });
 });
@@ -62,15 +72,27 @@ const deletePurchase = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IPurchase>(res, {
     statusCode: 200,
     success: true,
-    message: 'Purchase deleted successfully',
+    message: "Purchase deleted successfully",
     data: result,
   });
 });
 
+const getPurchaseInvoice = catchAsync(async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await PurchaseService.getPurchaseForInvoiceAndView(id);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: "Purchase retrieved successfully",
+    data: result,
+  });
+});
 export const PurchaseController = {
   createPurchase,
   getAllPurchases,
   getSinglePurchase,
   updatePurchase,
   deletePurchase,
+  getPurchaseInvoice,
 };

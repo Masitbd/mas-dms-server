@@ -1,6 +1,7 @@
 import { Model, Types } from "mongoose";
 
 export type IPurchaseItem = {
+  _id?: Types.ObjectId;
   purchaseItemId: string;
   purchaseId: Types.ObjectId;
   productId: Types.ObjectId;
@@ -12,6 +13,7 @@ export type IPurchaseItem = {
   medicineName: Types.ObjectId;
   salesRate: Number;
   dateExpire: Date;
+  dateMfg: Date;
   category: Types.ObjectId;
 };
 

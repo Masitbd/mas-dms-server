@@ -1,4 +1,4 @@
-import { Model, Types } from 'mongoose';
+import { Model, Types } from "mongoose";
 
 export type IStock = {
   productId: Types.ObjectId;
@@ -8,6 +8,7 @@ export type IStock = {
   quantityIn: number;
   quantityOut: number;
   currentQuantity: number;
+  salesRate: number;
 };
 
 export type StockModel = Model<IStock, Record<string, unknown>>;

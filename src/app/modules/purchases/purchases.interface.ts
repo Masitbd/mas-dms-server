@@ -17,3 +17,9 @@ export type IPurchase = {
 };
 
 export type PurchaseModel = Model<IPurchase, Record<string, unknown>>;
+
+export type IPurchaseFilters = {
+  searchTerm?: string;
+  supplierId?: string;
+  status?: string;
+};

@@ -33,6 +33,10 @@ const purchaseItemSchema = new Schema<IPurchaseItem, PurchaseItemModel>(
       type: Date,
       required: true,
     },
+    dateMfg: {
+      type: Date,
+      required: true,
+    },
     category: {
       type: Schema.Types.ObjectId,
       ref: "Category",

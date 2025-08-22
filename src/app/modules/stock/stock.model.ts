@@ -1,16 +1,16 @@
-import { Schema, model } from 'mongoose';
-import { IStock, StockModel } from './stock.interface';
+import { Schema, model } from "mongoose";
+import { IStock, StockModel } from "./stock.interface";
 
 const stockSchema = new Schema<IStock, StockModel>(
   {
     productId: {
       type: Schema.Types.ObjectId,
-      ref: 'Medicine',
+      ref: "Medicine",
       required: true,
     },
     purchaseItemId: {
       type: Schema.Types.ObjectId,
-      ref: 'PurchaseItem',
+      ref: "PurchaseItem",
       required: true,
     },
     batchNo: {
@@ -33,6 +33,10 @@ const stockSchema = new Schema<IStock, StockModel>(
       type: Number,
       required: true,
     },
+    salesRate: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -42,4 +46,4 @@ const stockSchema = new Schema<IStock, StockModel>(
   }
 );
 
-export const Stock = model<IStock, StockModel>('Stock', stockSchema);
+export const Stock = model<IStock, StockModel>("Stock", stockSchema);

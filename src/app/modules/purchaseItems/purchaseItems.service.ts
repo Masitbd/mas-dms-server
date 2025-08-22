@@ -45,7 +45,6 @@ const deletePurchaseItem = async (
 const getPurchaseItemForSinglePurchase = async (
   id: string
 ): Promise<IPurchaseItem[] | null> => {
-  console.log(id);
   const result = await PurchaseItem.find({
     purchaseId: new mongoose.Types.ObjectId(id),
   });
