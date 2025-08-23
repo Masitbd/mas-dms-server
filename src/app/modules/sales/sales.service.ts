@@ -14,7 +14,10 @@ const createSale = async (payload: ISale): Promise<ISale> => {
 };
 
 const getAllSales = async (query: Record<string, any>) => {
-  const salesQuery = new QueryBuilder(Sale.find().populate("paymentId"), query)
+  const salesQuery = new QueryBuilder(
+    Sale.find({ isDeleted: false }).populate("paymentId"),
+    query
+  )
     .filter()
     .sort()
     .paginate();
@@ -28,7 +31,9 @@ const getAllSales = async (query: Record<string, any>) => {
 };
 
 const getSingleSale = async (id: string): Promise<ISale | null> => {
-  const result = await Sale.findById(id).populate("paymentId");
+  const result = await Sale.findOne({ _id: id, isDeleted: false }).populate(
+    "paymentId"
+  );
   return result;
 };
 
@@ -43,7 +48,11 @@ const updateSale = async (
 };
 
 const deleteSale = async (id: string): Promise<ISale | null> => {
-  const result = await Sale.findByIdAndDelete(id);
+  const result = await Sale.findOneAndUpdate(
+    { _id: id },
+    { isDeleted: true },
+    { new: true }
+  );
   return result;
 };
 
