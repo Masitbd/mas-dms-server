@@ -21,4 +21,5 @@ export interface ISale {
   indoor_bill_no?: string;
   medicines: [IMedicineSale];
   posted_by: string;
+  isDeleted?: boolean;
 }

@@ -56,6 +56,7 @@ const salesSchema = new Schema<ISale>(
       type: String,
     },
     posted_by: { type: String },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,

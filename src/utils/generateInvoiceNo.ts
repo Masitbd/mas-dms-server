@@ -55,11 +55,8 @@ export const generateSalesInvoiceNo = async () => {
 
   const lastInvoiceNo = await findLastSalesInvoiceNo();
 
-  console.log(lastInvoiceNo, " lastInvoiceNo");
-
   if (lastInvoiceNo && currentYear === lastInvoiceNo.slice(4, 6)) {
     currentId = lastInvoiceNo.substring(6);
-    console.log(currentId, "currentId");
   }
 
   const incrementId = (Number(currentId) + 1).toString().padStart(6, "0");
