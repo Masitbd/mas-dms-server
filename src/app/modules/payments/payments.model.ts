@@ -9,10 +9,17 @@ const paymentSchema = new Schema<IPayment, PaymentModel>(
       required: true,
     },
 
-    amount: {
-      type: Number,
-      required: true,
-    },
+    percentDiscount: { type: Number },
+    discountAmount: { type: Number },
+    totalVat: { type: Number },
+    serviceCharge: { type: Number },
+    totalDiscount: { type: Number },
+    totalBill: { type: Number, required: true },
+    netPayable: { type: Number, required: true },
+
+    paid: { type: Number, required: true, default: 0 },
+    due: { type: Number, required: true, default: 0 },
+
     method: {
       type: String,
       enum: ["cash", "card", "bkash", "bank"],
