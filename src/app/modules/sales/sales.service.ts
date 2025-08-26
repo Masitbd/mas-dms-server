@@ -1,6 +1,7 @@
 import { generateSalesInvoiceNo } from "../../../utils/generateInvoiceNo";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { Payment } from "../payments/payments.model";
+import { salesableFields } from "./sales.constance";
 import { ISale } from "./sales.interface";
 import { Sale } from "./sales.model";
 
@@ -18,6 +19,7 @@ const getAllSales = async (query: Record<string, any>) => {
     Sale.find({ isDeleted: false }).populate("paymentId"),
     query
   )
+    .search(salesableFields)
     .filter()
     .sort()
     .paginate();
@@ -31,9 +33,9 @@ const getAllSales = async (query: Record<string, any>) => {
 };
 
 const getSingleSale = async (id: string): Promise<ISale | null> => {
-  const result = await Sale.findOne({ _id: id, isDeleted: false }).populate(
-    "paymentId"
-  );
+  const result = await Sale.findOne({ _id: id, isDeleted: false })
+    .populate("paymentId")
+    .populate("medicines.medicineId", "name");
   return result;
 };
 

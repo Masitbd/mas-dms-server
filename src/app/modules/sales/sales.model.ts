@@ -17,12 +17,14 @@ const salesSchema = new Schema<ISale>(
   {
     name: {
       type: String,
+      index: true,
     },
     address: {
       type: String,
     },
     contact_no: {
       type: String,
+      index: true,
     },
     medicines: [medicienSaleSchema],
     transaction_date: {
