@@ -8,6 +8,8 @@ export type IPayment = {
   totalVat: number;
   serviceCharge: number;
   totalDiscount: number;
+  extraDiscount: number;
+  advanceAmount: number;
   netPayable: number;
   pPaymentMode: string;
   purpose: string;
