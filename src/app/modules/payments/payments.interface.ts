@@ -10,6 +10,7 @@ export type IPayment = {
   totalDiscount: number;
   netPayable: number;
   pPaymentMode: string;
+  purpose: string;
   paid: number;
   due: number;
   pPayment: number;
