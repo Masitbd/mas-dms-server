@@ -4,6 +4,7 @@ import {
   getDueCollectionStatemntFromDB,
   getDueCollectionSummeryFromDB,
   getMedicineSalesStatemntFromDB,
+  getPatientSaleDueStatementFromDB,
 } from "./reports.service";
 import sendResponse from "../../../utils/sendResponse";
 
@@ -36,6 +37,17 @@ export const getDueCollectionSummery = catchAsync(
       success: true,
       statusCode: 200,
       message: "Due collection  summery Report Retrive successfully",
+      data: result,
+    });
+  }
+);
+export const getPatientSaleDueStatement = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getPatientSaleDueStatementFromDB(req.query);
+    sendResponse(res, {
+      success: true,
+      statusCode: 200,
+      message: "Due collection  patient Report Retrive successfully",
       data: result,
     });
   }
