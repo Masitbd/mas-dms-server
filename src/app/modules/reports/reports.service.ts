@@ -202,11 +202,24 @@ export const getPatientSaleDueStatementFromDB = async (
         totalBill: 1,
         totalDiscount: 1,
         netPayable: 1,
+        due: 1,
+        // posted_by: 1,
         bed: "$bedDetails?.name",
       },
     },
     {
       $sort: { createdAt: -1 },
+    },
+    {
+      $group: {
+        _id: null,
+        records: { $push: "$$ROOT" }, // keep all documents
+        totalBill: { $sum: "$totalBill" },
+        totalPaid: { $sum: "$paid" },
+        totalDiscount: { $sum: "$totalDiscount" },
+        totalNetPayable: { $sum: "$netPayable" },
+        totalDue: { $sum: "$due" },
+      },
     },
   ];
 
