@@ -27,8 +27,8 @@ export const getMedicineSalesStatemntFromDB = async (
     {
       $lookup: {
         from: "payments",
-        localField: "paymentId",
-        foreignField: "_id",
+        localField: "invoice_no",
+        foreignField: "invoice_no",
         as: "paymentDetails",
       },
     },
@@ -53,7 +53,7 @@ export const getMedicineSalesStatemntFromDB = async (
         advanceAmount: 1,
         netPayable: 1,
         createdAt: 1,
-        paymentInfo: "$paymentDetails",
+        "paymentDetails.paid": 1,
       },
     },
     {
@@ -62,7 +62,7 @@ export const getMedicineSalesStatemntFromDB = async (
     {
       $group: {
         _id: null,
-        records: { $first: "$$ROOT" },
+        records: { $push: "$$ROOT" },
         totalBill: { $sum: "$totalBill" },
         totalDiscount: { $sum: "$totalDiscount" },
         totalNetPayable: { $sum: "$netPayable" },
