@@ -1,6 +1,7 @@
 import { PipelineStage } from "mongoose";
 import { Sale } from "../sales/sales.model";
 import { Payment } from "../payments/payments.model";
+import { Stock } from "../stock/stock.model";
 
 export const getMedicineSalesStatemntFromDB = async (
   payload: Record<string, any>
@@ -259,4 +260,89 @@ export const getPatientSaleDueStatementFromDB = async (
   ];
 
   return await Sale.aggregate(query);
+};
+
+// ? All Patient due summery
+
+export const getPatientDueSummeryFromDB = async (
+  payload: Record<string, any>
+) => {
+  // Default to current date if no startDate and endDate are provided
+  const startDate = payload.startDate
+    ? new Date(payload.startDate)
+    : new Date();
+  const endDate = payload.endDate ? new Date(payload.endDate) : new Date();
+
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 999);
+
+  const query: PipelineStage[] = [
+    {
+      $match: {
+        createdAt: {
+          $gte: startDate,
+          $lte: endDate,
+        },
+        $expr: { $lt: ["$paid", "$netPayable"] },
+      },
+    },
+
+    {
+      $lookup: {
+        from: "beds",
+        localField: "bed_no",
+        foreignField: "_id",
+        as: "bedDetails",
+      },
+    },
+    {
+      $unwind: {
+        path: "$bedDetails",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+
+    {
+      $project: {
+        _id: 0,
+
+        invoice_no: 1,
+        createdAt: 1,
+        paid: 1,
+        posted_by: 1,
+        totalBill: 1,
+        totalDiscount: 1,
+        netPayable: 1,
+        due: 1,
+        // posted_by: 1,
+        bed: "$bedDetails?.name",
+      },
+    },
+    {
+      $sort: { createdAt: -1 },
+    },
+    {
+      $group: {
+        _id: "$invoice_no",
+        records: { $push: "$$ROOT" }, // keep all documents
+        totalBill: { $sum: "$totalBill" },
+        totalPaid: { $sum: "$paid" },
+        totalDiscount: { $sum: "$totalDiscount" },
+        totalNetPayable: { $sum: "$netPayable" },
+        totalDue: { $sum: "$due" },
+      },
+    },
+  ];
+
+  return await Sale.aggregate(query);
+};
+
+//? stock reports
+
+export const getMedicineStockRecordFromDB = async () => {
+  const result = await Stock.find()
+    .populate("purchaseItemId", "purchaseRate salesRate")
+    .populate("productId", "name");
+
+  return result;
 };
