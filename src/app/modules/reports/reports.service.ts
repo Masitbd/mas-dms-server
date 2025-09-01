@@ -44,12 +44,31 @@ export const getMedicineSalesStatemntFromDB = async (
         _id: 0,
         name: 1,
         invoice_no: 1,
+        discountAmount: 1,
+        totalBill: 1,
+        due: 1,
+        // totalPaid: 1,
+        totalDiscount: 1,
+        extraDiscount: 1,
+        advanceAmount: 1,
+        netPayable: 1,
         createdAt: 1,
         paymentInfo: "$paymentDetails",
       },
     },
     {
       $sort: { createdAt: -1 },
+    },
+    {
+      $group: {
+        _id: null,
+        records: { $first: "$$ROOT" },
+        totalBill: { $sum: "$totalBill" },
+        totalDiscount: { $sum: "$totalDiscount" },
+        totalNetPayable: { $sum: "$netPayable" },
+        totalPaid: { $sum: "$paymentDetails.paid" },
+        totalDue: { $sum: "$due" },
+      },
     },
   ];
 
@@ -83,16 +102,26 @@ export const getDueCollectionStatemntFromDB = async (
 
         invoice_no: 1,
         createdAt: 1,
+        purpose: 1,
         paid: 1,
       },
     },
     {
       $sort: { createdAt: -1 },
     },
+
+    {
+      $group: {
+        _id: null,
+        records: { $first: "$$ROOT" },
+        totalBill: { $sum: "$paid" },
+      },
+    },
   ];
 
   return await Payment.aggregate(query);
 };
+
 export const getDueCollectionSummeryFromDB = async (
   payload: Record<string, any>
 ) => {
@@ -110,6 +139,7 @@ export const getDueCollectionSummeryFromDB = async (
       $gte: startDate,
       $lte: endDate,
     },
+    purpose: "due-collection",
   };
 
   if (payload.userId) {
@@ -128,11 +158,30 @@ export const getDueCollectionSummeryFromDB = async (
         invoice_no: 1,
         createdAt: 1,
         paid: 1,
+        due: 1,
         posted_by: 1,
       },
     },
     {
       $sort: { createdAt: -1 },
+    },
+
+    {
+      $group: {
+        _id: "$posted_by",
+        latestInvoice: { $first: "$$ROOT" },
+        totalDueCollection: { $sum: "$paid" },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        posted_by: "$_id",
+        invoice_no: "$latestInvoice.invoice_no",
+        createdAt: "$latestInvoice.createdAt",
+        paid: "$latestInvoice.paid",
+        totalDueCollection: 1,
+      },
     },
   ];
 
@@ -162,20 +211,6 @@ export const getPatientSaleDueStatementFromDB = async (
       },
     },
 
-    {
-      $lookup: {
-        from: "sales",
-        localField: "invoice_no",
-        foreignField: "invoice_no",
-        as: "salesDetails",
-      },
-    },
-    {
-      $unwind: {
-        path: "$salesDetails",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
     {
       $lookup: {
         from: "beds",
@@ -223,5 +258,5 @@ export const getPatientSaleDueStatementFromDB = async (
     },
   ];
 
-  return await Payment.aggregate(query);
+  return await Sale.aggregate(query);
 };

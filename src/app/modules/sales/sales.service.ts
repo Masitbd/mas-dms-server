@@ -17,8 +17,7 @@ const createSale = async (payload: ISale): Promise<ISale> => {
 const getAllSales = async (query: Record<string, any>) => {
   const salesQuery = new QueryBuilder(
     Sale.find({ isDeleted: false })
-      .populate("paymentId")
-      .populate("medicines.medicineId", "name"),
+    .populate("medicines.medicineId", "name"),
     query
   )
     .search(salesableFields)

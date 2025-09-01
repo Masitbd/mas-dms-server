@@ -2,15 +2,7 @@ import { Model, Types } from "mongoose";
 
 export type IPayment = {
   invoice_no: string;
-  percentDiscount: number;
-  discountAmount: number;
-  totalBill: number;
-  totalVat: number;
-  serviceCharge: number;
-  totalDiscount: number;
-  extraDiscount: number;
-  advanceAmount: number;
-  netPayable: number;
+
   pPaymentMode: string;
   purpose: string;
   paid: number;

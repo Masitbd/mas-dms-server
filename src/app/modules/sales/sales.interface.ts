@@ -16,6 +16,17 @@ export interface ISale {
   transaction_date?: Date;
   paymentId: Schema.Types.ObjectId;
   invoice_no: string;
+  percentDiscount: number;
+  discountAmount: number;
+  totalBill: number;
+  totalVat: number;
+  serviceCharge: number;
+  totalDiscount: number;
+  extraDiscount: number;
+  advanceAmount: number;
+  netPayable: number;
+  paid: number;
+  due: number;
   patient_type: "outdoor" | "indoor";
   bed_no?: string;
   indoor_bill_no?: string;

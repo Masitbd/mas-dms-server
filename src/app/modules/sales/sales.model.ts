@@ -15,6 +15,11 @@ const medicienSaleSchema = new Schema<IMedicineSale>({
 
 const salesSchema = new Schema<ISale>(
   {
+    invoice_no: {
+      type: String,
+      required: true,
+      unique: true,
+    },
     name: {
       type: String,
       index: true,
@@ -33,17 +38,18 @@ const salesSchema = new Schema<ISale>(
       default: Date.now,
       index: true,
     },
-    paymentId: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      unique: true,
-      ref: "Payment",
-    },
-    invoice_no: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+
+    percentDiscount: { type: Number },
+    discountAmount: { type: Number },
+    extraDiscount: { type: Number },
+    advanceAmount: { type: Number },
+    totalVat: { type: Number },
+    serviceCharge: { type: Number },
+    totalDiscount: { type: Number },
+    totalBill: { type: Number, required: true },
+    netPayable: { type: Number, required: true },
+    due: { type: Number },
+    paid: { type: Number, required: true },
     patient_type: {
       type: String,
       required: true,

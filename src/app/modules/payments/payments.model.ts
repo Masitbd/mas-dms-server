@@ -10,15 +10,7 @@ const paymentSchema = new Schema<IPayment, PaymentModel>(
       index: true,
     },
 
-    percentDiscount: { type: Number },
-    discountAmount: { type: Number },
-    extraDiscount: { type: Number },
-    advanceAmount: { type: Number },
-    totalVat: { type: Number },
-    serviceCharge: { type: Number },
-    totalDiscount: { type: Number },
-    totalBill: { type: Number, required: true },
-    netPayable: { type: Number, required: true },
+ 
     purpose: {
       type: String,
       enum: ["sale", "due-collection", "purchase", "adjustment"],
