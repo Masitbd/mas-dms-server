@@ -1,3 +1,4 @@
+import { startSession } from "mongoose";
 import { generateSalesInvoiceNo } from "../../../utils/generateInvoiceNo";
 import QueryBuilder from "../../builder/QueryBuilder";
 import { Payment } from "../payments/payments.model";
@@ -6,18 +7,27 @@ import { ISale } from "./sales.interface";
 import { Sale } from "./sales.model";
 
 const createSale = async (payload: ISale): Promise<ISale> => {
-  payload.invoice_no = await generateSalesInvoiceNo();
+  const session = await startSession();
+  session.startTransaction();
+  try {
+    payload.invoice_no = await generateSalesInvoiceNo();
 
-  const paymentres = await Payment.create(payload);
-  payload.paymentId = paymentres._id as any;
-  const result = await Sale.create(payload);
-  return result;
+    await Payment.create([payload], { session });
+
+    const [result] = await Sale.create([payload], { session });
+    await session.commitTransaction();
+    session.endSession();
+    return result;
+  } catch (err) {
+    await session.abortTransaction();
+    session.endSession();
+    throw err;
+  }
 };
 
 const getAllSales = async (query: Record<string, any>) => {
   const salesQuery = new QueryBuilder(
-    Sale.find({ isDeleted: false })
-    .populate("medicines.medicineId", "name"),
+    Sale.find({ isDeleted: false }).populate("medicines.medicineId", "name"),
     query
   )
     .search(salesableFields)
