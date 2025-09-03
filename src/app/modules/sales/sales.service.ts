@@ -7,7 +7,7 @@ import { Sale } from "./sales.model";
 const createSale = async (payload: ISale): Promise<ISale> => {
   payload.invoice_no = await generateSalesInvoiceNo();
 
-  const paymentres = await Payment.create(payload);
+  const paymentres = await Payment.create({ amount: payload.paid, ...payload });
   payload.paymentId = paymentres._id as any;
   const result = await Sale.create(payload);
   return result;

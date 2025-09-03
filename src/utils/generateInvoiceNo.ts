@@ -36,7 +36,7 @@ const findLastSalesInvoiceNo = async () => {
   const lastItem = await Sale.findOne(
     {},
     {
-      invoiceNo: 1,
+      invoice_no: 1,
       _id: 0,
     }
   )
@@ -55,8 +55,8 @@ export const generateSalesInvoiceNo = async () => {
 
   const lastInvoiceNo = await findLastSalesInvoiceNo();
 
-  if (lastInvoiceNo && currentYear === lastInvoiceNo.slice(3, 5)) {
-    currentId = lastInvoiceNo.split("-")[1];
+  if (lastInvoiceNo && currentYear === lastInvoiceNo.slice(4, 6)) {
+    currentId = lastInvoiceNo.split("-")[1].slice(5);
   }
 
   const incrementId = (Number(currentId) + 1).toString().padStart(6, "0");
