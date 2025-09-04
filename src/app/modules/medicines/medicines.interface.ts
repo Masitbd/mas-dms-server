@@ -1,9 +1,9 @@
-import { Model, Types } from 'mongoose';
+import { Model, Types } from "mongoose";
 
 export type IMedicine = {
   medicineId: string;
   name: string;
-  genericName: Types.ObjectId;
+  genericName: string;
   category: Types.ObjectId;
   supplierName: Types.ObjectId;
   reOrderLevel: number;
@@ -16,4 +16,4 @@ export type IMedicine = {
   alertQty: number;
 };
 
-export type MedicineModel = Model<IMedicine, Record<string, unknown>>;  
+export type MedicineModel = Model<IMedicine, Record<string, unknown>>;

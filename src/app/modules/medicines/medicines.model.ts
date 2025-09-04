@@ -14,8 +14,7 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
       unique: true,
     },
     genericName: {
-      type: Schema.Types.ObjectId,
-      ref: "Generic",
+      type: String,
       required: true,
     },
     category: {
