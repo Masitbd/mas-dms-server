@@ -1,10 +1,8 @@
-import { PipelineStage, SortOrder } from "mongoose";
-import { paginationHelpers } from "../../helpers/paginationHelper";
-import { IGenericResponse } from "../../interface/common";
-import { IPaginationOptions } from "../../interface/pagination";
+import { PipelineStage } from "mongoose";
+
 import { IMedicine } from "./medicines.interface";
 import { Medicine } from "./medicines.model";
-import QueryBuilder from "../../builder/QueryBuilder";
+
 import { medicineSearchableFields } from "./medicine.constance";
 
 const createMedicine = async (payload: IMedicine): Promise<IMedicine> => {
@@ -25,26 +23,6 @@ const createMedicine = async (payload: IMedicine): Promise<IMedicine> => {
 };
 
 const getAllMedicines = async (query: Record<string, any>) => {
-  // const medicineQuery = new QueryBuilder(
-  //   Medicine.find()
-  //     .populate("genericName")
-  //     .populate("category")
-  //     .populate("supplierName"),
-  //   query
-  // )
-  //   .search(medicineSearchableFields)
-  //   .filter()
-  //   .sort()
-  //   .paginate()
-  //   .fields();
-
-  // const meta = await medicineQuery.countTotal();
-  // const data = await medicineQuery.modelQuery;
-  // return {
-  //   meta,
-  //   data,
-  // };
-
   const matchConditions: any = { isDeleted: false };
 
   // Handle search if provided
@@ -121,7 +99,7 @@ const getAllMedicines = async (query: Record<string, any>) => {
         openingBalanceRate: 1,
         price: "$fifoPrice",
         currentStock: {
-          $sum: "$stockData.currentQuantity", // sum all stock batches
+          $sum: "$stockData.currentQuantity",
         },
         category: "$categoyData.name",
       },

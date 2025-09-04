@@ -5,6 +5,7 @@ import { Payment } from "../payments/payments.model";
 import { salesableFields } from "./sales.constance";
 import { ISale } from "./sales.interface";
 import { Sale } from "./sales.model";
+import { Stock } from "../stock/stock.model";
 
 const createSale = async (payload: ISale): Promise<ISale> => {
   const session = await startSession();
@@ -15,6 +16,19 @@ const createSale = async (payload: ISale): Promise<ISale> => {
     await Payment.create([payload], { session });
 
     const [result] = await Sale.create([payload], { session });
+
+    //! stock out from stock
+
+    for (const item of result?.medicines) {
+      await Stock.findOneAndUpdate(
+        { productId: item.medicineId },
+        {
+          $inc: { currentQuantity: -item.quantity },
+        },
+        { new: true, session }
+      );
+    }
+
     await session.commitTransaction();
     session.endSession();
     return result;
