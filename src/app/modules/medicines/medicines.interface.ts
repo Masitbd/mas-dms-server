@@ -14,6 +14,7 @@ export type IMedicine = {
   salesRate: number;
   discount: number;
   alertQty: number;
+  isDeleted: boolean;
 };
 
 export type MedicineModel = Model<IMedicine, Record<string, unknown>>;

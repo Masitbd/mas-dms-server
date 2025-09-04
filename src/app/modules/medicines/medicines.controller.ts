@@ -17,7 +17,7 @@ const createMedicine = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllMedicines = catchAsync(async (req: Request, res: Response) => {
-  const result = await MedicineService.getAllMedicines(req.query);
+  const result = await MedicineService.getAllMedicinesFromDB(req.query);
 
   sendResponse(res, {
     statusCode: 200,
@@ -26,6 +26,20 @@ const getAllMedicines = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getAllMedicinesWithStock = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await MedicineService.getAllMedicinesWithStockFromDB(
+      req.query
+    );
+
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "Medicines retrieved successfully",
+      data: result,
+    });
+  }
+);
 
 const getSingleMedicine = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -67,6 +81,7 @@ const deleteMedicine = catchAsync(async (req: Request, res: Response) => {
 export const MedicineController = {
   createMedicine,
   getAllMedicines,
+  getAllMedicinesWithStock,
   getSingleMedicine,
   updateMedicine,
   deleteMedicine,

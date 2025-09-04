@@ -47,10 +47,7 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
       type: Number,
       required: true,
     },
-    salesRate: {
-      type: Number,
-      required: true,
-    },
+
     discount: {
       type: Number,
     },
@@ -58,6 +55,7 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
       type: Number,
       required: true,
     },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,

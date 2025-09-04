@@ -4,6 +4,7 @@ import { IMedicine } from "./medicines.interface";
 import { Medicine } from "./medicines.model";
 
 import { medicineSearchableFields } from "./medicine.constance";
+import QueryBuilder from "../../builder/QueryBuilder";
 
 const createMedicine = async (payload: IMedicine): Promise<IMedicine> => {
   const lastMedicine = await Medicine.findOne({}, { medicineId: 1 }).sort({
@@ -22,7 +23,25 @@ const createMedicine = async (payload: IMedicine): Promise<IMedicine> => {
   return result;
 };
 
-const getAllMedicines = async (query: Record<string, any>) => {
+const getAllMedicinesFromDB = async (query: Record<string, any>) => {
+  const medicineQuery = new QueryBuilder(
+    Medicine.find({ isDeleted: false }).select("medicineId name genericName"),
+    query
+  )
+    .search(medicineSearchableFields)
+    .sort()
+    .paginate();
+
+  const meta = await medicineQuery.countTotal();
+  const data = await medicineQuery.modelQuery;
+  return {
+    meta,
+    data,
+  };
+};
+
+// wiht stock
+const getAllMedicinesWithStockFromDB = async (query: Record<string, any>) => {
   const matchConditions: any = { isDeleted: false };
 
   // Handle search if provided
@@ -91,6 +110,8 @@ const getAllMedicines = async (query: Record<string, any>) => {
 
     {
       $project: {
+        medicineId: 1,
+        discount: 1,
         name: 1,
         genericName: 1,
         unit: 1,
@@ -153,7 +174,8 @@ const deleteMedicine = async (id: string): Promise<IMedicine | null> => {
 
 export const MedicineService = {
   createMedicine,
-  getAllMedicines,
+  getAllMedicinesFromDB,
+  getAllMedicinesWithStockFromDB,
   getSingleMedicine,
   updateMedicine,
   deleteMedicine,
