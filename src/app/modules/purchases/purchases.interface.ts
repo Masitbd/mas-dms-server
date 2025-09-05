@@ -14,6 +14,7 @@ export type IPurchase = {
   status: "due" | "partial" | "paid";
   createdBy: Types.ObjectId;
   purchaseItems: IPurchaseItem[];
+  netPayable: number;
 };
 
 export type PurchaseModel = Model<IPurchase, Record<string, unknown>>;
