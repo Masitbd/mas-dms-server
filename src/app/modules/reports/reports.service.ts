@@ -361,59 +361,6 @@ export const getPatientDueSummeryFromDB = async (
 
 //? stock reports
 
-// export const getMedicineStockRecordFromDB = async () => {
-//   const result = await Stock.find()
-//     .populate("purchaseItemId", "purchaseRate salesRate")
-//     .populate("productId", "name");
-
-//   return result;
-// };
-
-// export const getMedicineStockRecordFromDB = async () => {
-//   const fifoRecords = await Stock.aggregate([
-//     // populate product
-//     {
-//       $lookup: {
-//         from: "medicines",
-//         localField: "productId",
-//         foreignField: "_id",
-//         as: "product",
-//       },
-//     },
-//     { $unwind: "$product" },
-
-//     // populate purchase item
-//     {
-//       $lookup: {
-//         from: "purchaseitems",
-//         localField: "purchaseItemId",
-//         foreignField: "_id",
-//         as: "purchaseItem",
-//       },
-//     },
-//     { $unwind: "$purchaseItem" },
-
-//     // only keep stocks with available quantity
-//     { $match: { currentQuantity: { $gt: 0 } } },
-
-//     // sort by oldest first (FIFO)
-//     { $sort: { createdAt: 1 } },
-
-//     // group by product, pick the first available batch
-//     {
-//       $group: {
-//         _id: "$product._id",
-//         medicineName: { $first: "$product.name" },
-//         currentQty: { $sum: "$currentQuantity" }, // total available stock
-//         qtyIn: { $first: "$quantityIn" }, // qty in first batch
-//         purchaseRate: { $first: "$purchaseItem.purchaseRate" },
-//         salesRate: { $first: "$purchaseItem.salesRate" },
-//       },
-//     },
-//   ]);
-
-//   return fifoRecords;
-// };
 export const getMedicineStockRecordFromDB = async (page = 1, limit = 100) => {
   const skip = (page - 1) * limit;
 
@@ -491,4 +438,68 @@ export const getMedicineStockRecordFromDB = async (page = 1, limit = 100) => {
   };
 
   return { records, meta };
+};
+
+// ?
+
+export const getMedicineProfitLossFromDB = async (
+  payload: Record<string, any>
+) => {
+  const startDate = payload.startDate
+    ? new Date(payload.startDate)
+    : new Date();
+  const endDate = payload.endDate ? new Date(payload.endDate) : new Date();
+
+  startDate.setHours(0, 0, 0, 0);
+  endDate.setHours(23, 59, 59, 999);
+
+  const match: Record<string, any> = {
+    createdAt: {
+      $gte: startDate,
+      $lte: endDate,
+    },
+  };
+
+  const agreegatePipeline: PipelineStage[] = [
+    {
+      $match: match,
+    },
+    { $unwind: "$medicines" },
+    {
+      $lookup: {
+        from: "purchaseitems",
+        localField: "medicines.batchNo",
+        foreignField: "batchNo",
+        as: "purchaseInfo",
+      },
+    },
+    {
+      $unwind: { path: "$purchaseInfo", preserveNullAndEmptyArrays: true },
+    },
+    {
+      $lookup: {
+        from: "medicines",
+        localField: "medicines.medicineId",
+        foreignField: "_id",
+        as: "medicineInfo",
+      },
+    },
+    {
+      $unwind: { path: "$medicineInfo", preserveNullAndEmptyArrays: true },
+    },
+
+    {
+      $project: {
+        name: "$medicineInfo.name",
+        qty: "$medicines.quantity",
+        salesRate: "$medicines.unit_price",
+        discount: "$medicines.discount",
+        purchaseRate: "$purchaseInfo.purchaseRate",
+      },
+    },
+  ];
+
+  const result = await Sale.aggregate(agreegatePipeline);
+
+  return result;
 };

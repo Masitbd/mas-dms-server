@@ -3,6 +3,7 @@ import catchAsync from "../../../utils/catchAsync";
 import {
   getDueCollectionStatemntFromDB,
   getDueCollectionSummeryFromDB,
+  getMedicineProfitLossFromDB,
   getMedicineSalesStatemntFromDB,
   getMedicineStockRecordFromDB,
   getPatientDueSummeryFromDB,
@@ -61,6 +62,17 @@ export const getPatientDueSummery = catchAsync(
       success: true,
       statusCode: 200,
       message: "Due collection  patient Report Retrive successfully",
+      data: result,
+    });
+  }
+);
+export const getMedicineProfitLoss = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getMedicineProfitLossFromDB(req.query);
+    sendResponse(res, {
+      success: true,
+      statusCode: 200,
+      message: "Profit loss Report Retrive successfully",
       data: result,
     });
   }
