@@ -101,7 +101,11 @@ const getAllMedicinesWithStockFromDB = async (query: Record<string, any>) => {
                 },
               },
               as: "batch",
-              in: "$$batch.salesRate",
+              // in: "$$batch.salesRate",
+              in: {
+                batchNo: "$$batch.batchNo",
+                salesRate: "$$batch.salesRate",
+              },
             },
           },
         },
@@ -118,7 +122,8 @@ const getAllMedicinesWithStockFromDB = async (query: Record<string, any>) => {
         openingBalance: 1,
         openingBalanceDate: 1,
         openingBalanceRate: 1,
-        price: "$fifoPrice",
+        price: "$fifoPrice.salesRate",
+        batchNo: "$fifoPrice.batchNo",
         currentStock: {
           $sum: "$stockData.currentQuantity",
         },

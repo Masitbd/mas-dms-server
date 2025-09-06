@@ -7,6 +7,7 @@ export interface IMedicineSale {
   total_price: number;
   discount: number;
   discount_type: string;
+  batchNo: string;
 }
 
 export interface ISale {

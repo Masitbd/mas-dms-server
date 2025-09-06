@@ -7,6 +7,7 @@ const medicienSaleSchema = new Schema<IMedicineSale>(
       ref: "Medicine",
       required: true,
     },
+    batchNo: { type: String, required: true },
     quantity: { type: Number, require: true, min: 1 },
     unit_price: { type: Number },
     total_price: { type: Number },
