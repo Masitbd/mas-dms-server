@@ -39,6 +39,18 @@ const purchaseSchema = new Schema<IPurchase, PurchaseModel>(
       enum: ["due", "partial", "paid"],
       default: "due",
     },
+    vatAmount: {
+      type: Number,
+      default: 0,
+    },
+    discountAmount: {
+      type: Number,
+      default: 0,
+    },
+    netPayable: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,

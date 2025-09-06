@@ -15,6 +15,8 @@ export type IPurchaseItem = {
   dateExpire: Date;
   dateMfg: Date;
   category: Types.ObjectId;
+  discount: number;
+  vat: number;
 };
 
 export type PurchaseItemModel = Model<IPurchaseItem, Record<string, unknown>>;

@@ -42,6 +42,14 @@ const purchaseItemSchema = new Schema<IPurchaseItem, PurchaseItemModel>(
       ref: "Category",
       required: true,
     },
+    vat: {
+      type: Number,
+      default: 0,
+    },
+    discount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
