@@ -361,10 +361,134 @@ export const getPatientDueSummeryFromDB = async (
 
 //? stock reports
 
-export const getMedicineStockRecordFromDB = async () => {
-  const result = await Stock.find()
-    .populate("purchaseItemId", "purchaseRate salesRate")
-    .populate("productId", "name");
+// export const getMedicineStockRecordFromDB = async () => {
+//   const result = await Stock.find()
+//     .populate("purchaseItemId", "purchaseRate salesRate")
+//     .populate("productId", "name");
 
-  return result;
+//   return result;
+// };
+
+// export const getMedicineStockRecordFromDB = async () => {
+//   const fifoRecords = await Stock.aggregate([
+//     // populate product
+//     {
+//       $lookup: {
+//         from: "medicines",
+//         localField: "productId",
+//         foreignField: "_id",
+//         as: "product",
+//       },
+//     },
+//     { $unwind: "$product" },
+
+//     // populate purchase item
+//     {
+//       $lookup: {
+//         from: "purchaseitems",
+//         localField: "purchaseItemId",
+//         foreignField: "_id",
+//         as: "purchaseItem",
+//       },
+//     },
+//     { $unwind: "$purchaseItem" },
+
+//     // only keep stocks with available quantity
+//     { $match: { currentQuantity: { $gt: 0 } } },
+
+//     // sort by oldest first (FIFO)
+//     { $sort: { createdAt: 1 } },
+
+//     // group by product, pick the first available batch
+//     {
+//       $group: {
+//         _id: "$product._id",
+//         medicineName: { $first: "$product.name" },
+//         currentQty: { $sum: "$currentQuantity" }, // total available stock
+//         qtyIn: { $first: "$quantityIn" }, // qty in first batch
+//         purchaseRate: { $first: "$purchaseItem.purchaseRate" },
+//         salesRate: { $first: "$purchaseItem.salesRate" },
+//       },
+//     },
+//   ]);
+
+//   return fifoRecords;
+// };
+export const getMedicineStockRecordFromDB = async (page = 1, limit = 100) => {
+  const skip = (page - 1) * limit;
+
+  // Step 1: Count total distinct products with available stock
+  const totalDocsAgg = await Stock.aggregate([
+    { $match: { currentQuantity: { $gt: 0 } } },
+    { $group: { _id: "$productId" } },
+    { $count: "totalDocs" },
+  ]);
+
+  const totalDocs = totalDocsAgg[0]?.totalDocs || 0;
+  const totalPages = Math.ceil(totalDocs / limit);
+
+  // Step 2: Fetch paginated products with FIFO
+  const records = await Stock.aggregate([
+    { $match: { currentQuantity: { $gt: 0 } } },
+
+    // populate product
+    {
+      $lookup: {
+        from: "medicines",
+        localField: "productId",
+        foreignField: "_id",
+        as: "product",
+      },
+    },
+    { $unwind: "$product" },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "product.category",
+        foreignField: "_id",
+        as: "productCategory",
+      },
+    },
+    { $unwind: "$productCategory" },
+
+    // populate purchase item
+    {
+      $lookup: {
+        from: "purchaseitems",
+        localField: "purchaseItemId",
+        foreignField: "_id",
+        as: "purchaseItem",
+      },
+    },
+    { $unwind: "$purchaseItem" },
+
+    // sort by oldest batch first (FIFO)
+    { $sort: { createdAt: 1 } },
+
+    // group by product, pick the first batch with stock
+    {
+      $group: {
+        _id: "$product._id",
+        medicineName: { $first: "$product.name" },
+        medicineCategory: { $first: "$productCategory.name" },
+        currentQty: { $sum: "$currentQuantity" }, // total available stock
+        qtyIn: { $first: "$quantityIn" }, // qty in first batch
+        purchaseRate: { $first: "$purchaseItem.purchaseRate" },
+        salesRate: { $first: "$purchaseItem.salesRate" },
+      },
+    },
+
+    // pagination
+    { $skip: skip },
+    { $limit: limit },
+  ]);
+
+  const meta = {
+    totalDocs,
+    limit,
+    page,
+    totalPages,
+  };
+
+  return { records, meta };
 };
