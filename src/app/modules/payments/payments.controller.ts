@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
-import catchAsync from '../../../shared/catchAsync';
-import { PaymentService } from './payments.service';
-import sendResponse from '../../../shared/sendResponse';
-import { IPayment } from './payments.interface';
+import { Request, Response } from "express";
+import catchAsync from "../../../shared/catchAsync";
+import { PaymentService } from "./payments.service";
+import sendResponse from "../../../shared/sendResponse";
+import { IPayment } from "./payments.interface";
 
 const createPayment = catchAsync(async (req: Request, res: Response) => {
   const { ...paymentData } = req.body;
@@ -11,7 +11,17 @@ const createPayment = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IPayment>(res, {
     statusCode: 201,
     success: true,
-    message: 'Payment created successfully',
+    message: "Payment created successfully",
+    data: result,
+  });
+});
+const collecteDue = catchAsync(async (req: Request, res: Response) => {
+  const result = await PaymentService.collectDueIntoDB(req.body);
+
+  sendResponse(res, {
+    statusCode: 201,
+    success: true,
+    message: "due collection created successfully",
     data: result,
   });
 });
@@ -22,7 +32,7 @@ const getAllPayments = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IPayment[]>(res, {
     statusCode: 200,
     success: true,
-    message: 'Payments retrieved successfully',
+    message: "Payments retrieved successfully",
     data: result,
   });
 });
@@ -34,7 +44,7 @@ const getSinglePayment = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IPayment>(res, {
     statusCode: 200,
     success: true,
-    message: 'Payment retrieved successfully',
+    message: "Payment retrieved successfully",
     data: result,
   });
 });
@@ -47,7 +57,7 @@ const updatePayment = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IPayment>(res, {
     statusCode: 200,
     success: true,
-    message: 'Payment updated successfully',
+    message: "Payment updated successfully",
     data: result,
   });
 });
@@ -59,13 +69,14 @@ const deletePayment = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IPayment>(res, {
     statusCode: 200,
     success: true,
-    message: 'Payment deleted successfully',
+    message: "Payment deleted successfully",
     data: result,
   });
 });
 
 export const PaymentController = {
   createPayment,
+  collecteDue,
   getAllPayments,
   getSinglePayment,
   updatePayment,

@@ -98,6 +98,22 @@ export const getDueCollectionStatemntFromDB = async (
     },
 
     {
+      $lookup: {
+        from: "sales",
+        localField: "invoice_no",
+        foreignField: "invoice_no",
+        as: "salesInfo",
+      },
+    },
+
+    {
+      $unwind: {
+        path: "$salesInfo",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+
+    {
       $project: {
         _id: 0,
 
@@ -105,8 +121,13 @@ export const getDueCollectionStatemntFromDB = async (
         createdAt: 1,
         purpose: 1,
         paid: 1,
+        totalBill: "$salesInfo.totalBill",
+        netPayable: "$salesInfo.netPayable",
+        totalPaid: "$salesInfo.paid",
+        totalDue: "$salesInfo.due",
       },
     },
+
     {
       $sort: { createdAt: -1 },
     },
@@ -114,13 +135,14 @@ export const getDueCollectionStatemntFromDB = async (
     {
       $group: {
         _id: null,
-        records: { $first: "$$ROOT" },
-        totalBill: { $sum: "$paid" },
+        records: { $push: "$$ROOT" },
+        grandTotal: { $sum: "$paid" },
       },
     },
   ];
 
-  return await Payment.aggregate(query);
+  const [result] = await Payment.aggregate(query);
+  return result;
 };
 
 export const getDueCollectionSummeryFromDB = async (

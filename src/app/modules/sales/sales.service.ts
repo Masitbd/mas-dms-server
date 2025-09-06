@@ -59,7 +59,7 @@ const getAllSales = async (query: Record<string, any>) => {
 
 const getSingleSale = async (id: string): Promise<ISale | null> => {
   const result = await Sale.findOne({ _id: id, isDeleted: false })
-    .populate("paymentId")
+
     .populate("medicines.medicineId", "name");
   return result;
 };
