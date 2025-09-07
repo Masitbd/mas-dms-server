@@ -14,8 +14,7 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
       unique: true,
     },
     genericName: {
-      type: Schema.Types.ObjectId,
-      ref: "Generic",
+      type: String,
       required: true,
     },
     category: {
@@ -48,10 +47,7 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
       type: Number,
       required: true,
     },
-    salesRate: {
-      type: Number,
-      required: true,
-    },
+
     discount: {
       type: Number,
     },
@@ -59,6 +55,7 @@ const medicineSchema = new Schema<IMedicine, MedicineModel>(
       type: Number,
       required: true,
     },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,

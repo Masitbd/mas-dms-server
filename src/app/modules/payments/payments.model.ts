@@ -7,12 +7,20 @@ const paymentSchema = new Schema<IPayment, PaymentModel>(
       type: String,
 
       required: true,
+      index: true,
     },
 
-    amount: {
-      type: Number,
-      required: true,
+ 
+    purpose: {
+      type: String,
+      enum: ["sale", "due-collection", "purchase", "adjustment"],
+      default: "sale",
+      index: true,
     },
+
+    paid: { type: Number, required: true, default: 0 },
+    due: { type: Number, required: true, default: 0 },
+
     method: {
       type: String,
       enum: ["cash", "card", "bkash", "bank"],

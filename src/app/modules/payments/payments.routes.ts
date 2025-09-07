@@ -5,6 +5,7 @@ import express from "express";
 const router = express.Router();
 
 router.post("/create-payment", PaymentController.createPayment);
+router.post("/due-collection", PaymentController.collecteDue);
 router.get("/", PaymentController.getAllPayments);
 router.get("/:id", PaymentController.getSinglePayment);
 router.patch("/:id", PaymentController.updatePayment);

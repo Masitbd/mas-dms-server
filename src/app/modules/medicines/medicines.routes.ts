@@ -6,6 +6,7 @@ import { MedicineValidation } from "./medicines.validation";
 const router = express.Router();
 
 router.get("/", MedicineController.getAllMedicines);
+router.get("/with-stock", MedicineController.getAllMedicinesWithStock);
 router.post(
   "/create-medicine",
   validateRequest(MedicineValidation.createMedicineZodSchema),

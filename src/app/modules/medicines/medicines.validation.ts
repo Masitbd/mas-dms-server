@@ -33,9 +33,6 @@ const createMedicineZodSchema = z.object({
     openingBalanceRate: z.number({
       required_error: "Opening balance rate is required",
     }),
-    salesRate: z.number({
-      required_error: "Sales rate is required",
-    }),
 
     alertQty: z.number({
       required_error: "Alert quantity is required",

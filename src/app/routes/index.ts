@@ -17,6 +17,7 @@ import { PaymentsRoutes } from "../modules/payments/payments.routes";
 import { PurchaseReturnsRoutes } from "../modules/purchaseReturns/purchaseReturns.routes";
 import { PurchaseReturnItemsRoutes } from "../modules/purchaseReturnItems/purchaseReturnItems.routes";
 import { SupplierCreditsRoutes } from "../modules/supplierCredits/supplierCredits.routes";
+import { reportRoutes } from "../modules/reports/reports.routes";
 
 const router = Router();
 
@@ -39,6 +40,7 @@ const modules = [
   { path: "/purchase-returns", module: PurchaseReturnsRoutes },
   { path: "/purchase-return-items", module: PurchaseReturnItemsRoutes },
   { path: "/supplier-credits", module: SupplierCreditsRoutes },
+  { path: "/reports", module: reportRoutes },
 
   // { path: "/payments", module: PaymentRoutes },
 ];
