@@ -37,7 +37,6 @@ const findLastSalesInvoiceNo = async () => {
     {},
     {
       invoice_no: 1,
-      invoice_no: 1,
       _id: 0,
     }
   )
