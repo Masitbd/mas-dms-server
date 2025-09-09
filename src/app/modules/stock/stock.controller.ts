@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
-import catchAsync from '../../../shared/catchAsync';
-import { StockService } from './stock.service';
-import sendResponse from '../../../shared/sendResponse';
-import { IStock } from './stock.interface';
+import { Request, Response } from "express";
+import catchAsync from "../../../shared/catchAsync";
+import { StockService } from "./stock.service";
+import sendResponse from "../../../shared/sendResponse";
+import { IStock } from "./stock.interface";
 
 const createStock = catchAsync(async (req: Request, res: Response) => {
   const { ...stockData } = req.body;
@@ -11,7 +11,7 @@ const createStock = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IStock>(res, {
     statusCode: 201,
     success: true,
-    message: 'Stock created successfully',
+    message: "Stock created successfully",
     data: result,
   });
 });
@@ -22,7 +22,7 @@ const getAllStocks = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IStock[]>(res, {
     statusCode: 200,
     success: true,
-    message: 'Stocks retrieved successfully',
+    message: "Stocks retrieved successfully",
     data: result,
   });
 });
@@ -31,10 +31,10 @@ const getSingleStock = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await StockService.getSingleStock(id);
 
-  sendResponse<IStock>(res, {
+  sendResponse(res, {
     statusCode: 200,
     success: true,
-    message: 'Stock retrieved successfully',
+    message: "Stock retrieved successfully",
     data: result,
   });
 });
@@ -47,7 +47,7 @@ const updateStock = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IStock>(res, {
     statusCode: 200,
     success: true,
-    message: 'Stock updated successfully',
+    message: "Stock updated successfully",
     data: result,
   });
 });
@@ -59,7 +59,7 @@ const deleteStock = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IStock>(res, {
     statusCode: 200,
     success: true,
-    message: 'Stock deleted successfully',
+    message: "Stock deleted successfully",
     data: result,
   });
 });

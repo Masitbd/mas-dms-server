@@ -9,12 +9,33 @@ import { IPurchase, IPurchaseFilters } from "./purchases.interface";
 import { Purchase } from "./purchases.model";
 import { PurchasePayment } from "../purchasePayments/purchasePayments.model";
 import { IPurchaseItem } from "../purchaseItems/purchaseItems.interface";
+import { calculateInvoiceTotals } from "./purchases.helper";
 
 const createPurchase = async (payload: IPurchase): Promise<IPurchase> => {
   const { purchaseItems, ...purchaseData } = payload;
-  // if (payload.paidAmount == payload.totalAmount)
-  purchaseData.invoiceNo = await generateInvoiceNo();
-  const purchase = await Purchase.create(purchaseData);
+  const { NetPayable, TotalAmount, TotalDiscount, TotalVat } =
+    calculateInvoiceTotals(
+      payload?.purchaseItems,
+      payload?.discountPercentage,
+      payload?.discountPercentage
+    );
+
+  // setting calculated amounts
+  payload.totalAmount = TotalAmount;
+  payload.vatAmount = TotalVat;
+  payload.discountAmount = TotalDiscount;
+
+  // Invoice number
+  const invoiceNo = await generateInvoiceNo();
+
+  const modifiedPurchaseData: IPurchase = {
+    ...payload,
+    netPayable: NetPayable,
+    status: NetPayable == payload?.paidAmount ? "paid" : "due",
+    invoiceNo: invoiceNo,
+  };
+
+  const purchase = await Purchase.create(modifiedPurchaseData);
 
   for (const item of purchaseItems) {
     item.purchaseId = purchase._id;

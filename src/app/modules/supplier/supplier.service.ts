@@ -20,8 +20,6 @@ const createSupplier = async (payload: ISupplier): Promise<ISupplier> => {
 
   payload.supplierId = newSupplierId;
 
-
-
   const result = await Supplier.create(payload);
   return result;
 };
@@ -46,8 +44,8 @@ const getAllSuppliers = async (
   const supplierQuery = new QueryBuilder(Supplier.find(), query)
     .search(supplierSearchableFields)
     .filter()
-    .sort(sortBy, sortOrder as SortOrder)
-    .paginate(page, limit, skip)
+    .sort()
+    .paginate()
     .fields();
 
   const result = await supplierQuery.modelQuery;
