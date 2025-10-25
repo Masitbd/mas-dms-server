@@ -25,7 +25,17 @@ const createMedicine = async (payload: IMedicine): Promise<IMedicine> => {
 
 const getAllMedicinesFromDB = async (query: Record<string, any>) => {
   const medicineQuery = new QueryBuilder(
-    Medicine.find({ isDeleted: false }).select("medicineId name genericName"),
+    Medicine.find({ isDeleted: false })
+      .populate("category")
+      .select([
+        "medicineId",
+        "name",
+        "genericName",
+        "category",
+        "unit",
+        "openingBalanceRate",
+        "discount",
+      ]),
     query
   )
     .search(medicineSearchableFields)
