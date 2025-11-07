@@ -64,10 +64,25 @@ const deleteStock = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getStockByMedicineName = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await StockService.getStockByMedicineName(id);
+
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "Stock retrieved successfully",
+      data: result,
+    });
+  }
+);
+
 export const StockController = {
   createStock,
   getAllStocks,
   getSingleStock,
   updateStock,
   deleteStock,
+  getStockByMedicineName,
 };

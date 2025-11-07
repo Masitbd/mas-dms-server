@@ -55,8 +55,8 @@ const getSingleMedicine = catchAsync(async (req: Request, res: Response) => {
 
 const updateMedicine = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const { ...updatedData } = req.body;
-  const result = await MedicineService.updateMedicine(id, updatedData);
+
+  const result = await MedicineService.updateMedicine(id, req?.body);
 
   sendResponse<IMedicine>(res, {
     statusCode: 200,

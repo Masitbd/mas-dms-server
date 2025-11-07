@@ -1,4 +1,4 @@
-import { Schema } from "mongoose";
+import { Schema, Types } from "mongoose";
 import { IStock } from "./stock.interface";
 import { Stock } from "./stock.model";
 
@@ -9,8 +9,14 @@ const createStock = async (payload: IStock): Promise<IStock> => {
 
 const getAllStocks = async (): Promise<IStock[]> => {
   const result = await Stock.find({})
-    .populate("productId")
-    .populate("purchaseItemId");
+    .populate({
+      path: "productId",
+      populate: {
+        path: "category",
+        select: "name",
+      },
+    })
+    .select("productId");
   return result;
 };
 
@@ -35,10 +41,77 @@ const deleteStock = async (id: string): Promise<IStock | null> => {
   return result;
 };
 
+const getStockByMedicineName = async (id: string) => {
+  return await Stock.aggregate([
+    {
+      $match: {
+        productId: new Types.ObjectId(id),
+      },
+    },
+    {
+      $lookup: {
+        from: "medicines",
+        localField: "productId",
+        foreignField: "_id",
+        as: "productId",
+      },
+    },
+    {
+      $unwind: {
+        path: "$productId",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "productId.category",
+        foreignField: "_id",
+        as: "category",
+      },
+    },
+    {
+      $unwind: {
+        path: "$category",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: "generics",
+        localField: "productId.genericName",
+        foreignField: "_id",
+        as: "generic",
+      },
+    },
+
+    {
+      $unwind: {
+        path: "$generic",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: "suppliers",
+        localField: "supplierName",
+        foreignField: "_id",
+        as: "suppler",
+      },
+    },
+    {
+      $unwind: {
+        path: "$supplier",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+  ]);
+};
 export const StockService = {
   createStock,
   getAllStocks,
   getSingleStock,
   updateStock,
   deleteStock,
+  getStockByMedicineName,
 };

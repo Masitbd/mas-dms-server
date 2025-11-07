@@ -3,5 +3,4 @@ export const medicineSearchableFields = [
   "medicineId",
   "unit",
   "salesRate",
-  "genericName",
 ];

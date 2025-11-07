@@ -1,5 +1,5 @@
-import { Schema, model } from 'mongoose';
-import { ISupplier, SupplierModel } from './supplier.interface';
+import { Schema, model } from "mongoose";
+import { ISupplier, SupplierModel } from "./supplier.interface";
 
 const supplierSchema = new Schema<ISupplier, SupplierModel>(
   {
@@ -23,8 +23,6 @@ const supplierSchema = new Schema<ISupplier, SupplierModel>(
     },
     phone: {
       type: String,
-      required: true,
-      unique: true,
     },
     fax: {
       type: String,
@@ -48,6 +46,6 @@ const supplierSchema = new Schema<ISupplier, SupplierModel>(
 );
 
 export const Supplier = model<ISupplier, SupplierModel>(
-  'Supplier',
+  "Supplier",
   supplierSchema
 );
