@@ -3,7 +3,7 @@ import { Model, Types } from "mongoose";
 export type IMedicine = {
   medicineId: string;
   name: string;
-  genericName: string;
+  genericName: Types.ObjectId;
   category: Types.ObjectId;
   supplierName: Types.ObjectId;
   reOrderLevel: number;

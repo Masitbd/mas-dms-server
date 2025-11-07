@@ -27,6 +27,7 @@ const getAllMedicinesFromDB = async (query: Record<string, any>) => {
   const medicineQuery = new QueryBuilder(
     Medicine.find({ isDeleted: false })
       .populate("category")
+      .populate("genericName")
       .select([
         "medicineId",
         "name",

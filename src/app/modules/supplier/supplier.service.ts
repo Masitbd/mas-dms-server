@@ -41,12 +41,17 @@ const getAllSuppliers = async (
     "country",
   ];
 
-  const supplierQuery = new QueryBuilder(Supplier.find(), query)
-    .search(supplierSearchableFields)
-    .filter()
+  const supplierQuery = new QueryBuilder(Supplier.find(), {
+    ...query,
+    sortBy,
+    sortOrder,
+    page,
+    limit,
+    skip,
+  })
     .sort()
     .paginate()
-    .fields();
+    .search(supplierSearchableFields);
 
   const result = await supplierQuery.modelQuery;
   const meta = {
