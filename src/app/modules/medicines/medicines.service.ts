@@ -188,6 +188,62 @@ const deleteMedicine = async (id: string): Promise<IMedicine | null> => {
   return result;
 };
 
+const getMedicineWithStocksForSales = async (query: Record<string, any>) => {
+  const search = (query?.searchTerm || "").trim();
+
+  const pipeline = [
+    ...(search
+      ? [
+          {
+            $match: {
+              isDeleted: false,
+              $or: [
+                { name: { $regex: search, $options: "i" } },
+                { genericName: { $regex: search, $options: "i" } },
+                { medicineId: { $regex: search, $options: "i" } },
+              ],
+            },
+          },
+        ]
+      : [{ $match: { isDeleted: false } }]),
+
+    // Lookup stocks (and sort stocks by updatedAt latest first)
+    {
+      $lookup: {
+        from: "stocks",
+        let: { pid: "$_id" },
+        pipeline: [
+          { $match: { $expr: { $eq: ["$productId", "$$pid"] } } },
+
+          // Optional: only available quantity
+          { $match: { currentQuantity: { $gt: 0 } } },
+
+          // Sort stocks by updatedAt (latest first)
+          { $sort: { updatedAt: -1 } },
+        ],
+        as: "availableStocks",
+      },
+    },
+    { $match: { "availableStocks.0": { $exists: true } } },
+
+    // Output shape
+    {
+      $project: {
+        _id: 0,
+        medicine: "$$ROOT",
+        availableStocks: 1,
+      },
+    },
+
+    // Remove any accidental duplication field
+    { $addFields: { "medicine.availableStocks": "$$REMOVE" } },
+    {
+      $limit: 10,
+    },
+  ];
+  return await Medicine.aggregate(pipeline as PipelineStage[]).exec();
+};
+
 export const MedicineService = {
   createMedicine,
   getAllMedicinesFromDB,
@@ -195,4 +251,5 @@ export const MedicineService = {
   getSingleMedicine,
   updateMedicine,
   deleteMedicine,
+  getMedicineWithStocksForSales,
 };

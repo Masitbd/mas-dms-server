@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/", MedicineController.getAllMedicines);
 router.get("/with-stock", MedicineController.getAllMedicinesWithStock);
+router.get("/sales", MedicineController.getMedicineWithStocksForSales);
 router.post(
   "/create-medicine",
   validateRequest(MedicineValidation.createMedicineZodSchema),

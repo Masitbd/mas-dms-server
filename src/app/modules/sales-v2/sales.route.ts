@@ -10,12 +10,14 @@ router.post("/create-sale", SalesController.createSale);
 router.patch("/:id", SalesController.updateSale);
 
 // Invoice view (optionally: ?version=2)
-// router.get("/sale-invoice/:id", SalesController.getSaleInvoice);
+router.get("/sale-invoice/:id", SalesController.getSaleInvoice);
 
-// // UI hydration / visualization data
-// router.get("/sale-ui/:id", SalesController.getSaleUi);
+// UI hydration / visualization data
+router.get("/sale-ui/:id", SalesController.getSaleUi);
 
+// For patch
+router.get("/sale-update/:id", SalesController.getSaleForPatch);
 // Get all will be added later
-// router.get("/", SalesController.getAllSales);
+router.get("/", SalesController.getAllSales);
 
-export const SalesRoutes = router;
+export const SalesRoutes_V2 = router;
