@@ -19,6 +19,8 @@ import { PurchaseReturnItemsRoutes } from "../modules/purchaseReturnItems/purcha
 import { SupplierCreditsRoutes } from "../modules/supplierCredits/supplierCredits.routes";
 import { reportRoutes } from "../modules/reports/reports.routes";
 import { CustomerRoutes } from "../modules/customer/customer.routes";
+import path from "path";
+import { SalesRoutes_V2 } from "../modules/sales-v2/sales.route";
 
 const router = Router();
 
@@ -45,6 +47,10 @@ const modules = [
   {
     path: "/customer",
     module: CustomerRoutes,
+  },
+  {
+    path: "/sales-v2",
+    module: SalesRoutes_V2,
   },
 
   // { path: "/payments", module: PaymentRoutes },

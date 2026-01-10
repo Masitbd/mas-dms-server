@@ -78,6 +78,20 @@ const deleteMedicine = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMedicineWithStocksForSales = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await MedicineService.getMedicineWithStocksForSales(
+      req.query
+    );
+
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "Medicines retrieved successfully",
+      data: result,
+    });
+  }
+);
 export const MedicineController = {
   createMedicine,
   getAllMedicines,
@@ -85,4 +99,5 @@ export const MedicineController = {
   getSingleMedicine,
   updateMedicine,
   deleteMedicine,
+  getMedicineWithStocksForSales,
 };

@@ -107,6 +107,7 @@ const getStockByMedicineName = async (id: string) => {
     },
   ]);
 };
+
 export const StockService = {
   createStock,
   getAllStocks,
