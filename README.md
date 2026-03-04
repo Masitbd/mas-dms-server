@@ -178,3 +178,23 @@ Start the server
 - **GET** `/api/v1/supplier-credits/:id` - Get a single supplier credit
 - **PATCH** `/api/v1/supplier-credits/:id` - Update a supplier credit
 - **DELETE** `/api/v1/supplier-credits/:id` - Delete a supplier credit
+
+### Reports Module
+
+- **GET** `/api/v1/reports/medicine-sales-statement` - Get medicine sales statement report
+- **GET** `/api/v1/reports/due-collection` - Get due collection statement report
+- **GET** `/api/v1/reports/due-collection-summery` - Get due collection summary report
+- **GET** `/api/v1/reports/patient-due-list` - Get patient due list report
+- **GET** `/api/v1/reports/patient-due-summery` - Get patient due summary report
+- **GET** `/api/v1/reports/medicine-stock` - Get medicine stock report
+- **GET** `/api/v1/reports/medicine-stock-statement` - Get medicine stock statement report
+- **GET** `/api/v1/reports/medicine-profit-loss` - Get medicine profit and loss report
+- **GET** `/api/v1/reports/medicine-expiry-statement` - Get medicine expiry statement report
+- **GET** `/api/v1/reports/medicine-income-statement-summary` - Get medicine income statement summary report
+- `medicine-stock-statement` response fields: `records[]` (`mCategory`, `medicineName`, `stockQty`, `purchaseQty`, `totalPValue`, `unitPrice`, `totalSValue`), `totals` (`totalStockQty`, `totalPurchaseQty`, `totalPurchaseValue`, `totalStockValue`)
+- `medicine-profit-loss` query params: `startDate` (optional, example: `2025-10-01`), `endDate` (optional, example: `2025-10-31`)
+- `medicine-profit-loss` response fields: `records[]` (`particulars`, `qty`, `salesRate`, `totalAmount`, `purchaseRate`, `discount`, `netAmount`, `totalPRate`, `netProfit`), `totals` (same summary fields)
+- `medicine-expiry-statement` query params: `startDate` (optional, example: `2025-10-01`), `endDate` (optional, example: `2025-10-31`)
+- `medicine-expiry-statement` response fields: `records[]` (`invoiceNo`, `supplierName`, `category`, `medicineName`, `batchNo`, `qty`, `rate`, `amount`, `dateMfg`, `dateExp`), `totalQty`, `grandTotalAmount`
+- `medicine-income-statement-summary` query params: `startDate` (optional, example: `2025-10-01`), `endDate` (optional, example: `2025-10-31`)
+- `medicine-income-statement-summary` response fields: `records[]` and `total` with `indoor`, `outdoor`, `totalDiscount`, `indoorReturn`, `outdoorReturn`, `dueCollection`, `totalAdvance`, `netCollection`, `totalDue`

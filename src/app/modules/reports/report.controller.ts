@@ -3,9 +3,12 @@ import catchAsync from "../../../utils/catchAsync";
 import {
   getDueCollectionStatemntFromDB,
   getDueCollectionSummeryFromDB,
+  getMedicineExpiryStatementFromDB,
+  getMedicineIncomeStatementSummaryFromDB,
   getMedicineProfitLossFromDB,
   getMedicineSalesStatemntFromDB,
   getMedicineStockRecordFromDB,
+  getMedicineStockStatementFromDB,
   getPatientDueSummeryFromDB,
   getPatientSaleDueStatementFromDB,
 } from "./reports.service";
@@ -84,6 +87,42 @@ export const getMedicineStockRecord = catchAsync(
       success: true,
       statusCode: 200,
       message: "Medicine stock Report Retrive successfully",
+      data: result,
+    });
+  }
+);
+
+export const getMedicineStockStatement = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getMedicineStockStatementFromDB();
+    sendResponse(res, {
+      success: true,
+      statusCode: 200,
+      message: "Medicine stock statement report retrive successfully",
+      data: result,
+    });
+  }
+);
+
+export const getMedicineExpiryStatement = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getMedicineExpiryStatementFromDB(req.query);
+    sendResponse(res, {
+      success: true,
+      statusCode: 200,
+      message: "Medicine expiry statement report retrive successfully",
+      data: result,
+    });
+  }
+);
+
+export const getMedicineIncomeStatementSummary = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await getMedicineIncomeStatementSummaryFromDB(req.query);
+    sendResponse(res, {
+      success: true,
+      statusCode: 200,
+      message: "Medicine income statement summary report retrive successfully",
       data: result,
     });
   }
