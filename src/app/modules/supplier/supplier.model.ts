@@ -19,7 +19,6 @@ const supplierSchema = new Schema<ISupplier, SupplierModel>(
     },
     address: {
       type: String,
-      required: true,
     },
     phone: {
       type: String,

@@ -17,7 +17,7 @@ const findLastSupplierId = async () => {
 };
 
 export const generateSupplierId = async () => {
-  let currentId = "0";
+  let currentId = "000";
   const lastSupplierId = await findLastSupplierId();
 
   if (lastSupplierId) {
